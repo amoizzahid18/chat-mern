@@ -6,11 +6,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 import { connectDB } from './database/connectDB.js';
-app.use('/', authRoutes);
-
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use('/', authRoutes);
+
 
 connectDB().then(() => {
     app.listen(PORT, () => {
