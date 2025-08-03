@@ -1,11 +1,17 @@
-const express = require('express');
+import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 5000;
+import authRoutes from './routes/authRoutes.js';
+
+app.use('/', authRoutes);
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 }); 
 
 app.get('/', (req, res) => {
