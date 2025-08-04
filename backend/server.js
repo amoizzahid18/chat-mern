@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import msgRoutes from './routes/msgRoutes.js';
 import cookieParser from 'cookie-parser';
-dotenv.config();
+
+dotenv.config({ debug: false }); // it will not log the config loading process of variables from .env file
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
