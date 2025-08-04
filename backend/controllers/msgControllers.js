@@ -1,7 +1,7 @@
 import Message from "../models/msgModel.js";
 import Convo from "../models/convoModel.js";
 
-export const sendMsg = async (req, res) => {
+const sendMsg = async (req, res) => {
   try {
     const { id: receiverId } = req.params; // receiverId
     const { message } = req.body;
@@ -34,3 +34,24 @@ export const sendMsg = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getMsgs = async (req, res) => {
+  try {
+    const { id: toChatWithId } = req.params;
+    const senderId  = req.user._id;
+
+    let conversation = await Convo.findOne({
+      participants: [senderId, toChatWithId],
+    }).populate("messages");
+
+    if (!conversation) {
+      return res.status(200).json([]);
+    }
+    const messages = conversation.messages;
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error in getting single convo messages:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+export { sendMsg, getMsgs };
