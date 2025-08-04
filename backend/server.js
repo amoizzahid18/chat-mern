@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import msgRoutes from './routes/msgRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
 
 dotenv.config({ debug: false }); // it will not log the config loading process of variables from .env file
@@ -17,6 +18,8 @@ app.use(cookieParser());
 
 app.use('/auth', authRoutes);
 app.use('/messages', msgRoutes);
+app.use('/home', userRoutes);
+
 
 
 

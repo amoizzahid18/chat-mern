@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 
-export const protectMsg = async (req, res, next) => {
+export const protectRoute = async (req, res, next) => {
     try {
         const token = req.cookies.jwt
         if(!token) {
@@ -22,4 +22,4 @@ export const protectMsg = async (req, res, next) => {
         res.status(500).json({ message: error.message });
     }
 };
-export default protectMsg;
+export default protectRoute;
