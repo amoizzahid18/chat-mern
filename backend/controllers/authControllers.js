@@ -5,7 +5,7 @@ import generateTokenAndSetCookie from "../util/jwtToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullname, username, email, password, confirmPassword, gender } =
+    const { fullname, username, email, password, confirmPassword, gender, profilePic } =
       req.body;
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
@@ -15,7 +15,11 @@ export const signup = async (req, res) => {
     }
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-
+    if(!profilePic){
+      gender === "male"
+          ? `https://avatar.iran.liara.run/public/boy?username=${username}`
+          : `https://avatar.iran.liara.run/public/girl?username=${username}`
+    };
     const newUser = new User({
       fullname,
       username,
@@ -23,10 +27,8 @@ export const signup = async (req, res) => {
       //   password: bcryptjs.hashSync(password, 10),
       password: hashedPassword,
       gender,
-      profilePic:
-        gender === "male"
-          ? `https://avatar.iran.liara.run/public/boy?username=${username}`
-          : `https://avatar.iran.liara.run/public/girl?username=${username}`,
+      profilePic
+        
     });
     if (newUser) {
     generateTokenAndSetCookie(newUser._id, res);
