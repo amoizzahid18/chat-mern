@@ -147,8 +147,8 @@ function Login() {
         </div>
 
         <button className="btn btn-neutral w-full  mt-4">Login</button>
-        <div className="text-center mt-4 px-2">Or Sign In using</div>
-        <div className="flex justify-center rounded-full mx-24 py-6 btn btn-neutral items-center my-8 ">
+        <div className="text-center mt-8 px-2">Or Sign In using</div>
+        <div className="flex justify-center rounded-full mx-24 py-6 btn btn-neutral items-center my-8">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -183,7 +183,7 @@ function Login() {
         <div className="divider px-20"></div>
         <div className="text-center mt-4 px-2">
           Don't have an account?
-          <div className="text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100">
+          <div className="text-purple-700 link focus:translate-y-1 duration-75  hover:text-purple-900 transition duration-100">
             Register
           </div>
         </div>
