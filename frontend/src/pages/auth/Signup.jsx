@@ -1,6 +1,6 @@
 import React from "react";
-import male from "../assets/male.png";
-import female from "../assets/female.png";
+import male from "../../assets/male.png";
+import female from "../../assets/female.png";
 function Signup() {
   const [password, setPassword] = React.useState("margot123");
   const eyeOpen = (

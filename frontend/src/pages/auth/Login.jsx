@@ -183,7 +183,7 @@ function Login() {
         <div className="divider px-20"></div>
         <div className="text-center mt-4 px-2">
           Don't have an account?
-          <div className="text-purple-700 link focus:translate-y-1 duration-75  hover:text-purple-900 transition duration-100">
+          <div className="text-purple-700 link focus:translate-y-1  hover:text-purple-900 transition duration-100">
             Register
           </div>
         </div>
