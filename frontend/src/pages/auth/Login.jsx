@@ -1,4 +1,8 @@
 import React from "react";
+import { useState, useEffect } from "react";
+
+import axios from "axios";
+import { error } from "console";
 
 function Login() {
   const eyeOpen = (
@@ -28,26 +32,84 @@ function Login() {
     </svg>
   );
   const eyeClose = (
-    <svg
-      className="h-[1.5em] opacity-50 cursor-pointer"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+    <button
+      onClick={() => {
+        setShowPassword(true);
+        setTimeout(() => {
+          setShowPassword(false);
+        }, 1500);
+      }}
     >
-      <g
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        strokeWidth="2.0"
-        fill="none"
-        stroke="currentColor"
+      <svg
+        className="h-[1.5em] opacity-50 cursor-pointer"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
-        />
-      </g>
-    </svg>
+        <g
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeWidth="2.0"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+          />
+        </g>
+      </svg>
+    </button>
   );
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+  });
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const validateInput = (name, value) => {
+    const usernamePattern = /^[A-Za-z][A-Za-z0-9-]*$/;
+    const passwordPattern = /(?=.*\d)(?=.*[a-z]).{6,}$/;
+
+    let errorMessage = "";
+
+    if (name === "username") {
+      if (!usernamePattern.test(value)) {
+        errorMessage = "Username is invalid";
+      }
+    }
+    if (name === "password") {
+      if (!passwordPattern.test(value)) {
+        errorMessage =
+          "Password must be at least 6 characters long and contain a number";
+      }
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: errorMessage }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
+    validateInput(name, value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // if there's any error in either field, stop
+    if (errors.username || errors.password) return;
+
+    alert(
+      `Username: ${credentials.username}, Password: ${credentials.password} , logged in`
+    );
+  };
+
   return (
     <>
       <div className=" bg-base-200 border-base-300 rounded-box w-lg border p-7 pt-10">
@@ -55,7 +117,7 @@ function Login() {
 
         <div className="my-4">
           <label className="label block">Username</label>
-          <label className="input validator w-full">
+          <label className="input  w-full">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +136,9 @@ function Login() {
             </svg>
             <input
               type="text"
-              //   className="input validator"
+              name="username"
+              value={credentials.username}
+              onChange={handleChange}
               required
               placeholder="quinn123"
               pattern="[A-Za-z][A-Za-z0-9\-]*"
@@ -83,12 +147,14 @@ function Login() {
               title="Only letters, numbers or dash"
             />
           </label>
-          <p className="validator-hint hidden">Must be 3 to 30 characters</p>
+          {errors.username && (
+            <div className="mt-1 text-xs text-red-500">{errors.username}</div>
+          )}
         </div>
 
         <div className="my-4">
           <label className="label block">Password</label>
-          <label className="input validator w-full">
+          <label className="input  w-full">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -107,46 +173,27 @@ function Login() {
             </svg>
 
             <input
-              type="password"
-              // className="input validator"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
               required
               placeholder="margot123"
-              minLength="6"
+              // minLength="6"
               pattern="(?=.*\d)(?=.*[a-z]).{6,}"
               title="Must be more than 6 characters"
             />
-
-            <svg
-              className="h-[1.5em] opacity-50 cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.0"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-              </g>
-            </svg>
+            {showPassword ? eyeOpen : eyeClose}
           </label>
-          <p className="validator-hint hidden">
-            Password should be atleast 6 characters
-          </p>
+          {errors.password && (
+            <div className="mt-1 text-xs text-red-500">{errors.password}</div>
+          )}
         </div>
 
-        <button className="btn btn-neutral w-full  mt-4">Login</button>
+        <button onClick={handleSubmit} className="btn btn-neutral w-full  mt-4">
+          Login
+        </button>
+
         <div className="text-center mt-8 px-2">Or Sign In using</div>
         <div className="flex justify-center rounded-full mx-24 py-6 btn btn-neutral items-center my-8">
           <svg
