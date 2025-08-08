@@ -2,11 +2,11 @@ import React from 'react'
 
 function TypeMsg() {
   return (
-    <div className="rounded-full bg-transparent">
-        <div className="input w-full">
-          <input type="text" placeholder="Type here" className=" w-full" />
-          <button className="btn btn-circle mx-2">
-            <input type="file" className="" />
+    <div className=" bg-transparent flex flex-row justify-between items-center  mx-4 my-4">
+        <div className="input rounded-full mr-4 cursor-default w-full">
+          <input type="text" placeholder="Type here" className=" w-full " />
+          <button className="btn border-none bg-transparent   btn-circle ">
+            <input type="file" className="hidden" />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -14,7 +14,7 @@ function TypeMsg() {
               stroke-width="1.5"
               stroke="currentColor"
               class="size-6"
-              rotate="45"
+              
             >
               <path
                 stroke-linecap="round"
@@ -24,7 +24,7 @@ function TypeMsg() {
             </svg>
           </button>
         </div>
-        <button className="btn btn-neutral">
+        <button className="btn btn-neutral scale-80">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
