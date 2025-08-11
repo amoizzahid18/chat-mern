@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes.js';
 import msgRoutes from './routes/msgRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 dotenv.config({ debug: false }); // it will not log the config loading process of variables from .env file
 
@@ -15,6 +16,10 @@ import { connectDB } from './database/connectDB.js';
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend URL
+  credentials: true
+}));
 
 app.use('/auth', authRoutes);
 app.use('/messages', msgRoutes);

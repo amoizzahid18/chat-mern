@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-import { error } from "console";
 
 function Login() {
   const eyeOpen = (
@@ -73,14 +72,15 @@ function Login() {
   });
 
   const validateInput = (name, value) => {
-    const usernamePattern = /^[A-Za-z][A-Za-z0-9-]*$/;
-    const passwordPattern = /(?=.*\d)(?=.*[a-z]).{6,}$/;
+    const usernamePattern = /^[A-Za-z][A-Za-z0-9-]{2,29}$/;
+    const passwordPattern = /(?=.*\d).{6,}$/;
 
     let errorMessage = "";
 
     if (name === "username") {
       if (!usernamePattern.test(value)) {
-        errorMessage = "Username is invalid";
+        errorMessage =
+          "Username must start with a letter and minimum 3 characters";
       }
     }
     if (name === "password") {
@@ -99,15 +99,39 @@ function Login() {
     validateInput(name, value);
   };
 
+  const loginUser = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/auth/login",
+        credentials
+      );
+      if (response.status === 200) {
+        const user = response.data;
+        alert(`Welcome ${user.profilePic}`);
+        setCredentials({ username: "", password: "" });
+        setErrors({ username: "", password: "" });
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      setErrors({
+        username: "Invalid username or password",
+        password: "",
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (credentials.username === "" || credentials.password === "") {
+      setErrors({
+        username: credentials.username === "" ? "Username is required" : "",
+        password: credentials.password === "" ? "Password is required" : "",
+      });
+      return;
+    }
 
-    // if there's any error in either field, stop
-    if (errors.username || errors.password) return;
-
-    alert(
-      `Username: ${credentials.username}, Password: ${credentials.password} , logged in`
-    );
+    // if no errors, proceed with login
+    loginUser();
   };
 
   return (
@@ -117,7 +141,7 @@ function Login() {
 
         <div className="my-4">
           <label className="label block">Username</label>
-          <label className="input  w-full">
+          <label className="input w-full">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +172,7 @@ function Login() {
             />
           </label>
           {errors.username && (
-            <div className="mt-1 text-xs text-red-500">{errors.username}</div>
+            <div className="mt-1  text-xs text-red-500">{errors.username}</div>
           )}
         </div>
 
