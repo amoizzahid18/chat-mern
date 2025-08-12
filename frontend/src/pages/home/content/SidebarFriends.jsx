@@ -3,15 +3,24 @@ import SBarFriend from "./SBarFriend";
 
 function SidebarFriends() {
   return (
-    <div>
-      <ul className="list bg-base-100 rounded-box shadow-md">
+    <div className="bg-base-100 h-full rounded-box shadow-sm mb-4 ">
+      <div className="max-h-[500px] overflow-y-scroll">
         <SBarFriend />
         <SBarFriend />
         <SBarFriend />
         <SBarFriend />
         <SBarFriend />
         <SBarFriend />
-      </ul>
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+        <SBarFriend />
+
+      </div>
     </div>
   );
 }

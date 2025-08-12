@@ -4,13 +4,13 @@ import SidebarFriends from "./SidebarFriends";
 
 function Sidebar() {
   return (
-    <div>
+    <div className="flex flex-col w-1/4  p-4">
       <SidebarSearch />
-      <div className="divider px-10"></div>
+      {/* <div className="divider px-10"></div> */}
       <SidebarFriends />
-      <div className="divider px-10"></div>
-      <div>
-        <button className="btn btn-neutral ml-10 my-6">
+      {/* <div className="divider px-10 mt-10"></div> */}
+      <div className="flex justify-start p-">
+        <button className="btn btn-neutral ml-10 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

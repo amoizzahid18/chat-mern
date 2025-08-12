@@ -2,10 +2,10 @@ import React from "react";
 
 function SidebarSearch() {
   return (
-    <label className="input">
-      <input type="search" required placeholder="Search" />
+    <label className="input mb-4 rounded-full border-none">
+      <input type="search" required placeholder="Search"  />
 
-      <button className="btn btn-ghost btn-square">
+      <button className="hover:cursor-pointer scale-115 p-2  flex justify-center items-center rounded-full">
         <svg
           className="h-[1em] opacity-50"
           xmlns="http://www.w3.org/2000/svg"

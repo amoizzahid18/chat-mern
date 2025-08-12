@@ -3,6 +3,7 @@ import male from "../../assets/male.png";
 import female from "../../assets/female.png";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const eyeOpen = (
@@ -541,9 +542,9 @@ function Signup() {
               <div className="divider mt-8 px-6"></div>
               <div className="text-center mt-4 px-2">
                 Already have an account?
-                <div className="text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100">
+                <Link to={"/login"} className="mx-2 text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100">
                   Login
-                </div>
+                </Link>
               </div>
             </div>
           </div>
