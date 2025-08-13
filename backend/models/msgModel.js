@@ -23,6 +23,19 @@ const msgSchema = new mongoose.Schema(
     isEdited: {
       type: Boolean,
       default: false,
+    },
+    isForwarded:{
+      type: Boolean,
+      default:false
+    },
+    isAReply:{
+      type: Boolean, 
+      default: false
+    },
+    replyTo:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+      default: null
     }
   },
   { timestamps: true }

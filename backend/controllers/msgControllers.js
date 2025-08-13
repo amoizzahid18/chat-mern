@@ -4,7 +4,7 @@ import Convo from "../models/convoModel.js";
 const sendMsg = async (req, res) => {
   try {
     const { id: receiverId } = req.params; // receiverId
-    const { message } = req.body;
+    const { message, isForwarded, isAReply, replyTo } = req.body;
     const senderId = req.user._id;
 
     let conversation = await Convo.findOne({
@@ -16,12 +16,29 @@ const sendMsg = async (req, res) => {
         participants: [senderId, receiverId],
       });
     }
-
-    const newMessage = await Message.create({
-      senderId,
-      receiverId,
-      message,
-    });
+    let newMessage;
+    if (isAReply && replyTo) {
+      newMessage = await Message.create({
+        senderId,
+        receiverId,
+        message,
+        isAReply,
+        replyTo,
+      });
+    } else if (isForwarded) {
+      newMessage = await Message.create({
+        senderId,
+        receiverId,
+        message,
+        isForwarded,
+      });
+    } else {
+      newMessage = await Message.create({
+        senderId,
+        receiverId,
+        message
+      });
+    }
     if (newMessage) {
       conversation.messages.push(newMessage);
     }
@@ -38,7 +55,7 @@ const sendMsg = async (req, res) => {
 const getMsgs = async (req, res) => {
   try {
     const { id: toChatWithId } = req.params;
-    const senderId  = req.user._id;
+    const senderId = req.user._id;
 
     let conversation = await Convo.findOne({
       participants: [senderId, toChatWithId],
@@ -66,7 +83,6 @@ const delMsg = async (req, res) => {
     msg.message = "This message has been deleted";
     await msg.save();
     res.status(200).json({ message: "Message deleted successfully" });
-
   } catch (error) {
     console.error("Error deleting message:", error);
     res.status(500).json({ message: error.message });

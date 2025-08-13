@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 
+
 export const getUsersForSidebar = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -27,4 +28,54 @@ export const deleteAccount = async (req, res) => {
   }
 };
 
-export default getUsersForSidebar;
+
+export const addFriend = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const senderId = req.user._id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const sender = await User.findById(senderId);
+    if (!sender) {
+      return res.status(400).json({ message: "You are not a user" });
+    }
+    if (sender.friends.includes(id)) {
+      return res.status(400).json({ message: "Already friends" });
+    }
+
+    sender.friends.push(id);
+    await sender.save();
+    return res.status(201).json({ message: "Friend added successfully" });
+  } catch (error) {
+    console.error("Error while adding friend", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const removeFriend = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sender = req.user._id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    if (!sender) {
+      return res.status(400).json({ message: "You are not a user" });
+    }
+    if (!sender.friends.includes(id)) {
+      return res.status(400).json({ message: "User is not a friend" });
+    }
+    sender.friends = sender.friends.filter((friend) => friend !== id);
+    await sender.save();
+    return res.status(201).json({ message: "Friend removed successfully" });
+  } catch (error) {
+    console.error("Error removing friend", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+export default {getUsersForSidebar, deleteAccount, removeFriend, addFriend};

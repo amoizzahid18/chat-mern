@@ -5,8 +5,15 @@ import generateTokenAndSetCookie from "../util/jwtToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullname, username, email, password, confirmPassword, gender, profilePic } =
-      req.body;
+    const {
+      fullname,
+      username,
+      email,
+      password,
+      confirmPassword,
+      gender,
+      profilePic,
+    } = req.body;
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
@@ -15,11 +22,11 @@ export const signup = async (req, res) => {
     }
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-    if(!profilePic){
+    if (!profilePic) {
       gender === "male"
-          ? `https://avatar.iran.liara.run/public/boy?username=${username}`
-          : `https://avatar.iran.liara.run/public/girl?username=${username}`
-    };
+        ? `https://avatar.iran.liara.run/public/boy?username=${username}`
+        : `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    }
     const newUser = new User({
       fullname,
       username,
@@ -27,12 +34,11 @@ export const signup = async (req, res) => {
       //   password: bcryptjs.hashSync(password, 10),
       password: hashedPassword,
       gender,
-      profilePic
-        
+      profilePic,
     });
     if (newUser) {
-    generateTokenAndSetCookie(newUser._id, res);
-        await newUser.save();
+      generateTokenAndSetCookie(newUser._id, res);
+      await newUser.save();
 
       res.status(201).json({
         _id: newUser._id,
@@ -53,7 +59,10 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    const isPasswordValid = await bcryptjs.compare(password, user?.password || "");
+    const isPasswordValid = await bcryptjs.compare(
+      password,
+      user?.password || ""
+    );
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password" });
     }
@@ -72,12 +81,10 @@ export const login = async (req, res) => {
 };
 export const logout = async (req, res) => {
   try {
-    await res.cookie("jwt", "", {maxAge:0})
+    await res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.error("Error during logout:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
-

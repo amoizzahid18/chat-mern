@@ -3,7 +3,7 @@ import { sendMsg, getMsgs, delMsg, editMsg, delConvo } from '../controllers/msgC
 import { protectRoute } from '../middleware/protectRoute.js';
 const router = express.Router();
 
-router.post('/send/:id', protectRoute, sendMsg);
+router.post('/dms/send/:id', protectRoute, sendMsg);
 router.get('/dms/:id', protectRoute, getMsgs);
 router.put('/dms/message/delete/:id', protectRoute, delMsg);
 router.put('/message/edit/:id', protectRoute, editMsg); // Assuming you have an edit message route
