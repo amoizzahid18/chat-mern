@@ -1,8 +1,8 @@
 import React from "react";
 
-function SidebarSearch() {
+function SearchBar() {
   return (
-    <label className="input mb-4 rounded-full border-none">
+    <label className="input w-full my-4  rounded-full border-none">
       <input type="search" required placeholder="Search"  />
 
       <button className="hover:cursor-pointer scale-115 p-2  flex justify-center items-center rounded-full">
@@ -27,4 +27,4 @@ function SidebarSearch() {
   );
 }
 
-export default SidebarSearch;
+export default SearchBar;

@@ -1,11 +1,11 @@
 import React from "react";
-import SidebarSearch from "./SidebarSearch";
 import SidebarFriends from "./SidebarFriends";
+import SearchBar from "../SearchBar";
 
 function Sidebar() {
   return (
     <div className="flex flex-col w-1/4  p-4">
-      <SidebarSearch />
+      <SearchBar />
       {/* <div className="divider px-10"></div> */}
       <SidebarFriends />
       {/* <div className="divider px-10 mt-10"></div> */}

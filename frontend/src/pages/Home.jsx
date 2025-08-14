@@ -1,6 +1,6 @@
 import React from 'react'
-import Sidebar from './home/content/Sidebar'
-import ChatSection from './home/messages/ChatSection'
+import Sidebar from './home/sidebar/Sidebar.jsx'
+import ChatSection from './home/chatSection/ChatSection.jsx'
 
 function Home() {
   return (

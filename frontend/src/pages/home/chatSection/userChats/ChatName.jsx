@@ -4,8 +4,8 @@ function ChatName( {setIsDm} ) {
   return (
     <>
       <div className="flex flex-row justify-start bg-white items-center">
-        <button onClick={()=> setIsDm(true)}
-          className="ml-4 hover:bg-base-200 hover:shadow-md  rounded-full">
+        <button onClick={()=> setIsDm(true) }
+          className="ml-4 hover:bg-base-200 hover:shadow-md cursor-pointer  rounded-full">
         <svg
           
           className="h-[1.5em] "
