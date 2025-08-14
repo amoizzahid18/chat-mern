@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { mockFriends } from "./chatSection/addFriends/mockFriends.js";
 
-function SearchBar() {
+function SearchBar({ value = "", onChange = () => {} }) {
+  const [filter, setFilter] = useState("");
+  // const [newUsers, setNewUsers] = useState(mockFriends);
+  const new_users = () => {
+  }
   return (
     <label className="input w-full my-4  rounded-full border-none">
-      <input type="search" required placeholder="Search"  />
+      <input
+        type="search"
+        placeholder="Search"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
 
       <button className="hover:cursor-pointer scale-115 p-2  flex justify-center items-center rounded-full">
         <svg

@@ -1,9 +1,9 @@
 import React from "react";
 
-function WelcomeHome() {
+function WelcomeHome({setIsAddFriend}) {
   return (
     <div className="h-full flex flex-col justify-center items-center">
-      <div className="dropdown  w-full flex justify-end p-4">
+      <div className="dropdown  w-full flex justify-end p-5">
         <button
           tabIndex={0}
           role="button"
@@ -37,7 +37,8 @@ function WelcomeHome() {
           <li className="btn btn-ghost w-full flex justify-start pl-3">
             View Profile
           </li>
-          <li className="btn btn-ghost w-full flex justify-start pl-3">
+          <li className="btn btn-ghost w-full flex justify-start pl-3"
+          onClick={()=>{setIsAddFriend(true)}}>
             Add Friend
           </li>
           <li className="btn btn-ghost w-full  flex justify-start pl-3 text-nowrap">

@@ -1,24 +1,22 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import SBarFriend from "./SBarFriend";
 
-function SidebarFriends() {
+
+function SidebarFriends({friends , setIsDm}) {
+  
   return (
     <div className="bg-base-100 h-full rounded-box shadow-sm mb-4 ">
-      <div className="max-h-[490px] p-2 overflow-y-scroll">
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
-        <SBarFriend />
+      <div className="max-h-[490px] pt-2  overflow-y-scroll"
+      onClick={()=>setIsDm(true)}>
+        {friends.map((friend) => (
+          <SBarFriend
+            
+            setIsDm={setIsDm}
+            fullname={friend.fullname}
+            bio={friend.bio}
+            profilePic={friend.profilePic}
+          />
+        ))}
       </div>
     </div>
   );

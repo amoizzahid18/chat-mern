@@ -1,4 +1,4 @@
-const mockFriends = [
+export const mockFriends = [
   {
     "fullname": "Adam Carter",
     "username": "adam_carter",
@@ -68,7 +68,40 @@ const mockFriends = [
     "profilePic": "https://avatar.iran.liara.run/public/girl?username=mia_davis",
     "bio": "Coffee connoisseur and travel blogger.",
     "email": "mia_davis@example.com"
-  }
+  },{
+    "fullname": "Olivia White",
+    "username": "olivia_white",
+    "profilePic": "https://avatar.iran.liara.run/public/girl?username=olivia_white",
+    "bio": "Nature lover and amateur painter.",
+    "email": "olivia_white@example.com"
+  },
+  {
+    "fullname": "Lucas Brown",
+    "username": "lucas_brown",
+    "profilePic": "https://avatar.iran.liara.run/public/boy?username=lucas_brown",
+    "bio": "Always up for an adventure, loves road trips.",
+    "email": "lucas_brown@example.com"
+  },
+  {
+    "fullname": "Ava Thompson",
+    "username": "ava_thompson",
+    "profilePic": "https://avatar.iran.liara.run/public/girl?username=ava_thompson",
+    "bio": "Creative mind with a love for design.",
+    "email": "ava_thompson@example.com"
+  },
+  {
+    "fullname": "Ethan Miller",
+    "username": "ethan_miller",
+    "profilePic": "https://avatar.iran.liara.run/public/boy?username=ethan_miller",
+    "bio": "Music producer and weekend surfer.",
+    "email": "ethan_miller@example.com"
+  },
+  {
+    "fullname": "Mia Davis",
+    "username": "mia_davis",
+    "profilePic": "https://avatar.iran.liara.run/public/girl?username=mia_davis",
+    "bio": "Coffee connoisseur and travel blogger.",
+    "email": "mia_davis@example.com"
+  },
 ]
 
-export default mockFriends; 
