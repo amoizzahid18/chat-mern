@@ -1,12 +1,14 @@
 import React from "react";
+import { useChatUI } from "../../../ChatUIContext";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
+  const { goHome } = useChatUI();
   return (
     <>
       <div className="flex flex-row justify-start bg-white items-center">
         <button
-          // onClick={() => setIsDm(true)}
+          onClick={goHome}
           className="ml-4 hover:bg-base-200 hover:shadow-md cursor-pointer  rounded-full"
         >
           <svg

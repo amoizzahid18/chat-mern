@@ -25,23 +25,23 @@ export const ChatUIProvider = ({ children }) => {
   const viewProfile = () => {
     setIsDm(false);
     setIsAddFriend(false);
-    setIsViewProfile(false);
+    setIsViewProfile(true);
   };
-  return;
-  <ChatUIContext.Provider
-    value={{
-      isDm,
-      isAddFriend,
-      isViewProfile,
-      openDm,
-      openAddFriend,
-      goHome,
-      viewProfile,
-    }}
-  >
-    {children}
-  </ChatUIContext.Provider>;
+  return (
+    <ChatUIContext.Provider
+      value={{
+        isDm,
+        isAddFriend,
+        isViewProfile,
+        openDm,
+        openAddFriend,
+        goHome,
+        viewProfile,
+      }}
+    >
+      {children}
+    </ChatUIContext.Provider>
+  );
 };
-
 
 export const useChatUI = () => useContext(ChatUIContext);
