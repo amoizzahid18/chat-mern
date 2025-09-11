@@ -1,6 +1,7 @@
 import React from "react";
 
-function WelcomeHome({setIsAddFriend}) {
+// function WelcomeHome({setIsAddFriend}) {
+  function WelcomeHome() {
   return (
     <div className="h-full flex flex-col justify-center items-center">
       <div className="dropdown  w-full flex justify-end p-5">

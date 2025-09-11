@@ -2,7 +2,8 @@ import React, { useMemo, useState } from "react";
 import SBarFriend from "./SBarFriend";
 
 
-function SidebarFriends({friends , setIsDm}) {
+// function SidebarFriends({friends , setIsDm}) {
+function SidebarFriends({friends }) {  
   
   return (
     <div className="bg-base-100 h-full rounded-box shadow-sm mb-4 ">
@@ -11,7 +12,7 @@ function SidebarFriends({friends , setIsDm}) {
         {friends.map((friend) => (
           <SBarFriend
             
-            setIsDm={setIsDm}
+            // setIsDm={setIsDm}
             fullname={friend.fullname}
             bio={friend.bio}
             profilePic={friend.profilePic}

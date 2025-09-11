@@ -1,27 +1,29 @@
 import React from "react";
 
-function ChatName( {setIsDm} ) {
+// function ChatName( {setIsDm} ) {
+function ChatName() {
   return (
     <>
       <div className="flex flex-row justify-start bg-white items-center">
-        <button onClick={()=> setIsDm(true) }
-          className="ml-4 hover:bg-base-200 hover:shadow-md cursor-pointer  rounded-full">
-        <svg
-          
-          className="h-[1.5em] "
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
+        <button
+          // onClick={() => setIsDm(true)}
+          className="ml-4 hover:bg-base-200 hover:shadow-md cursor-pointer  rounded-full"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
-        </svg>
+          <svg
+            className="h-[1.5em] "
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+            />
+          </svg>
         </button>
 
         <img

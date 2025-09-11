@@ -3,7 +3,8 @@ import SidebarFriends from "./SidebarFriends";
 import SearchBar from "../SearchBar";
 import { mockFriends } from "../chatSection/addFriends/mockFriends";
 
-function Sidebar( {setIsDm} ) {
+// function Sidebar( {setIsDm} ) {
+function Sidebar(  ) {
   const [filter, setFilter] = useState("");
   const filterFriends = useMemo(() => {
     const q = filter.trim().toLowerCase();
@@ -18,7 +19,8 @@ function Sidebar( {setIsDm} ) {
     <div className="flex flex-col w-1/4  p-4">
       <SearchBar value={filter} onChange={setFilter} />
 
-      <SidebarFriends friends={filterFriends} setIsDm={setIsDm} />
+      {/* <SidebarFriends friends={filterFriends} setIsDm={setIsDm} /> */}
+      <SidebarFriends friends={filterFriends} />
 
       <div className="flex justify-start p-">
         <button className="btn btn-neutral ml-10 ">

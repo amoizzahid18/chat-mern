@@ -9,10 +9,12 @@ function ChatSection({ isDm, setIsDm, isAddFriend, setIsAddFriend }) {
   return (
     <div className=" w-full bg-gradient-to-tl  from-teal-300 to-pink-300 flex flex-col justify-center ">
       {!isDm && !isAddFriend ? (
-        <WelcomeHome setIsAddFriend={setIsAddFriend} />
+        // <WelcomeHome setIsAddFriend={setIsAddFriend} />
+        <WelcomeHome  />
       ) : !isAddFriend && isDm ? (
         <div className="w-full h-full">
-          <ChatName setIsDm={setIsDm} />
+          {/* <ChatName setIsDm={setIsDm} /> */}
+          <ChatName  />
           <ChatBox />
           
         </div>
