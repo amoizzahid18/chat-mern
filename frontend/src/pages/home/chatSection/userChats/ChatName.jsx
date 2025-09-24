@@ -3,7 +3,7 @@ import { useChatUI } from "../../../ChatUIContext";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
-  const { goHome } = useChatUI();
+  const { goHome, viewProfile } = useChatUI();
   return (
     <>
       <div className="flex flex-row justify-start bg-white items-center">
@@ -29,12 +29,14 @@ function ChatName() {
         </button>
 
         <img
-          className="size-10 rounded-4xl mx-3 my-2 "
+          className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
           src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+          onClick={viewProfile}
         />
         <div className="w-full h-full flex flex-row justify-between  pr-2">
           <div className="flex flex-col ml-4 justify-center items-start">
-            <div className="font-bold text-lg">Dio Lupa</div>
+            <div className="font-bold text-lg cursor-pointer"
+            onClick={viewProfile}>Dio Lupa</div>
             <div className="text-xs opacity-70">Online</div>
           </div>
           <button className="btn btn-square btn-ghost">

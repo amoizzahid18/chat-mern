@@ -23,7 +23,7 @@ export const ChatUIProvider = ({ children }) => {
     setIsViewProfile(false);
   };
   const viewProfile = () => {
-    setIsDm(false);
+    setIsDm(true);
     setIsAddFriend(false);
     setIsViewProfile(true);
   };

@@ -21,7 +21,8 @@ function ChatSection() {
           <ChatName  />
           <ChatBox />
         </div>
-      ) : !isDm && isAddFriend && !isViewProfile ? (
+      ) : 
+      !isDm && isAddFriend && !isViewProfile ? (
         <AddFriend />
       ):(
         <ViewProfile />
