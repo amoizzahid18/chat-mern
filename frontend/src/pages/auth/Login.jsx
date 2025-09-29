@@ -1,10 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { io } from "socket.io-client";
 import axios from "axios";
+import { useSocket } from "../SocketContext";
 
 function Login() {
+
+  const socket = useSocket();
+
+
   const eyeOpen = (
     <svg
       className="h-[1.5em] opacity-50 cursor-pointer"
@@ -133,6 +138,13 @@ function Login() {
 
     // if no errors, proceed with login
     loginUser();
+
+    useEffect(() => {
+      socket.on("connect", () => {
+        console.log("hello and Connected to socket server:   ", socket.id)
+      });
+      return () => socket.off("connect");
+    }, [socket]);
   };
 
   return (
@@ -255,7 +267,10 @@ function Login() {
         <div className="divider px-20"></div>
         <div className="text-center mt-4 px-2">
           Don't have an account?
-          <Link to={"/signup"} className="mx-2 text-purple-700 link focus:translate-y-1  hover:text-purple-900 transition duration-100">
+          <Link
+            to={"/signup"}
+            className="mx-2 text-purple-700 link focus:translate-y-1  hover:text-purple-900 transition duration-100"
+          >
             Register
           </Link>
         </div>

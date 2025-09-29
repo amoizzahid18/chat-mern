@@ -35,7 +35,7 @@ const io = new Server(httpServer, {
   },
 });
 io.on("connection", (socket) => {
-  console.log("Socket server running");
+  console.log("Socket server running: ", socket.id);
 });
 
 connectDB()
