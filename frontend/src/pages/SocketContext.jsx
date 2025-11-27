@@ -1,20 +1,20 @@
-import { createContext, useContext, useMemo } from "react";
-import { io } from "socket.io-client"
+import { createContext, useContext, useRef } from "react";
+import { io } from "socket.io-client";
 
+const SocketContext = createContext(null);
 
-const SocketContext = createContext();
+export const SocketProvider = ({ children }) => {
+  const socketRef = useRef(null);
 
-export const SocketProvider = ({children}) => {
+  if (!socketRef.current) {
+    socketRef.current = io("http://localhost:4500");
+  }
 
-    const socket = useMemo( // so that it doesnt create new in each render, can also useRef
-        () => io('http://localhost:4500', ),
-        []
-    );
-    return (
-        <SocketContext.Provider value={socket}>
-            {children}
-        </SocketContext.Provider>
-    )
-}
+  return (
+    <SocketContext.Provider value={socketRef.current}>
+      {children}
+    </SocketContext.Provider>
+  );
+};
 
 export const useSocket = () => useContext(SocketContext);

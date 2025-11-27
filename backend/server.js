@@ -35,7 +35,13 @@ const io = new Server(httpServer, {
   },
 });
 io.on("connection", (socket) => {
-  console.log("Socket server running: ", socket.id);
+  console.log("New Client connected: ", socket.id);
+  socket.on("hello", (data) => {
+    console.log(data)
+  })
+  socket.on("disconnect", () => {
+    console.log("User disconnect: ", socket.id)
+  })
 });
 
 connectDB()
