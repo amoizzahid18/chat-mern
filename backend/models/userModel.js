@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const user = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   fullname: {
     type: String,
     required: true,
@@ -17,21 +17,28 @@ const user = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: function () {
+      return this.authProvider === "local";
+    },
     minlength: 6,
+  },
+  authProvider: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
   },
   gender: {
     type: String,
-    required: true,
     enum: ["Male", "Female"],
+    default: "Male",
   },
   profilePic: {
     type: String,
     default: "",
   },
-  bio:{
+  bio: {
     type: String,
-    default: ""
+    default: "",
   },
   friends: [
     {
@@ -41,5 +48,6 @@ const user = new mongoose.Schema({
     },
   ],
 });
-const User = mongoose.model("User", user);
+
+const User = mongoose.model("User", userSchema);
 export default User;

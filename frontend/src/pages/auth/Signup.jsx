@@ -68,7 +68,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [credentials, setCredentials] = useState({
-    fullName: "",
+    fullname: "",
     username: "",
     email: "",
     password: "",
@@ -78,7 +78,7 @@ function Signup() {
   });
 
   const [errors, setErrors] = useState({
-    fullName: "",
+    fullname: "",
     username: "",
     email: "",
     password: "",
@@ -112,7 +112,7 @@ function Signup() {
     let errorMessage = "";
 
     switch (name) {
-      case "fullName":
+      case "fullname":
         if (!fullnamePattern.test(value)) {
           errorMessage =
             "Full name must be minimum 3 characters and letters only";
@@ -169,7 +169,7 @@ function Signup() {
         console.log(user)
         Navigate("/login");
         setCredentials({
-          fullName: "",
+          fullname: "",
           username: "",
           email: "",
           password: "",
@@ -179,7 +179,7 @@ function Signup() {
     } catch (error) {
       console.error("Signup failed:", error);
       setErrors({
-        fullName: error.response?.data?.message || "Signup failed",
+        fullname: error.response?.data?.message || "Signup failed",
         username: "",
         email: "",
         password: "",
@@ -193,13 +193,13 @@ function Signup() {
     if (
       credentials.username === "" ||
       credentials.password === "" ||
-      credentials.fullName === "" ||
+      credentials.fullname === "" ||
       credentials.email === "" ||
       credentials.confirmPassword === "" ||
       credentials.gender === ""
     ) {
       setErrors({
-        fullName: credentials.fullName === "" ? "Full Name is required" : "",
+        fullname: credentials.fullname === "" ? "Full Name is required" : "",
         username: credentials.username === "" ? "Username is required" : "",
         email: credentials.email === "" ? "Email is required" : "",
         password: credentials.password === "" ? "Password is required" : "",
@@ -224,14 +224,14 @@ function Signup() {
     }
     signupUser();
     setErrors({
-      fullName: "",
+      fullname: "",
       username: "",
       email: "",
       password: "",
       confirmPassword: "",
     });
     setCredentials({
-      fullName: "",
+      fullname: "",
       username: "",
       email: "",
       password: "",
@@ -274,17 +274,17 @@ function Signup() {
                     // className="input validator"
                     type="text"
                     required
-                    name="fullName"
-                    value={credentials.fullName}
+                    name="fullname"
+                    value={credentials.fullname}
                     onChange={handleChange}
                     placeholder="Harley Quinn"
                     minLength="3"
                     maxLength="30"
                   />
                 </label>
-                {errors.fullName && (
+                {errors.fullname && (
                   <div className="mt-1  text-xs text-red-500">
-                    {errors.fullName}
+                    {errors.fullname}
                   </div>
                 )}
               </div>
