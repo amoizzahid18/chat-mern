@@ -3,9 +3,11 @@ import male from "../../assets/male.png";
 import female from "../../assets/female.png";
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
+  const Navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const eyeOpen = (
     <svg
       className="h-[1.5em] opacity-50 cursor-pointer"
@@ -87,16 +89,17 @@ function Signup() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
-
+    // setCredentials((c) => Object.assign( c, {[name]: value }));
+    setCredentials({...credentials, [name]: value})
     // Validate input
     validateInput(name, value);
   };
+    
 
   const validateInput = (name, value) => {
     const fullnamePattern = /^[A-Za-z\s]{3,30}$/;
     const usernamePattern = /^[A-Za-z][A-Za-z0-9-]{2,29}$/;
-    const passwordPattern = /(?=.*\d)(?=.*[a-z]).{6,}$/;
+    const passwordPattern = /(?=.*\d).{6,}$/;
     const escapedPassword = credentials.password.replace(
       /[.*+?^${}()|[\]\\]/g,
       "\\$&"
@@ -154,13 +157,17 @@ function Signup() {
   };
   const signupUser = async () => {
     try {
+      setLoading(true);
+      console.log(credentials)
       const response = await axios.post(
         "http://localhost:5000/auth/signup",
         credentials
       );
       if (response.status === 201) {
+        setLoading(false);
         const user = response.data;
-        alert(`Welcome ${user.fullname}`);
+        console.log(user)
+        Navigate("/login");
         setCredentials({
           fullName: "",
           username: "",
@@ -267,8 +274,8 @@ function Signup() {
                     // className="input validator"
                     type="text"
                     required
-                    value={credentials.fullName}
                     name="fullName"
+                    value={credentials.fullName}
                     onChange={handleChange}
                     placeholder="Harley Quinn"
                     minLength="3"
@@ -506,7 +513,7 @@ function Signup() {
                       className="checkbox checkbox-neutral rounded"
                       type="radio"
                       name="gender"
-                      value={"Male"}
+                      value="Male"
                       onChange={handleChange}
                     />
                   </label>
@@ -520,7 +527,7 @@ function Signup() {
                       className="checkbox checkbox-neutral rounded"
                       type="radio"
                       name="gender"
-                      value={"Female"}
+                      value="Female"
                       onChange={handleChange}
                     />
                   </label>
@@ -532,17 +539,26 @@ function Signup() {
                 )}
               </div>
 
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                className="btn btn-neutral w-full  mt-4"
-              >
-                Sign Up
-              </button>
+              {loading ? (
+                <button className="btn btn-neutral w-full  mt-4 cursor-not-allowed">
+                  <span class="loading loading-dots loading-sm bg-white"></span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="btn btn-neutral w-full  mt-4"
+                >
+                  Signup
+                </button>
+              )}
               <div className="divider mt-8 px-6"></div>
               <div className="text-center mt-4 px-2">
                 Already have an account?
-                <Link to={"/login"} className="mx-2 text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100">
+                <Link
+                  to={"/login"}
+                  className="mx-2 text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100"
+                >
                   Login
                 </Link>
               </div>
