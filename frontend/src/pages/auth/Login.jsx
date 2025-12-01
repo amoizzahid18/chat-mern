@@ -130,11 +130,13 @@ function Login() {
         navigate("/home");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Login failed:", error);
       setErrors({
         username: "Invalid username or password",
         password: "",
       });
+      
     }
   };
 

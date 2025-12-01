@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SidebarFriends from "./SidebarFriends";
@@ -9,6 +9,8 @@ import { useSocket } from "../../SocketContext";
 // function Sidebar( {setIsDm} ) {
 function Sidebar() {
   const { connectSocket } = useSocket();
+  const [friends, setFriends] = useState([]);
+  const [loadingF, setLoadingF] = useState(false);
   const navigate = useNavigate();
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,13 +36,30 @@ function Sidebar() {
       console.error("Logout failed", error);
     }
   };
-
+  const fetchFriends = async () => {
+    try {
+      setLoadingF(true);
+      const response = await axios.get("http://localhost:5000/home",{
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        const friends = response.data;
+        setFriends(friends);
+        setLoadingF(false);
+      }
+    } catch (error) {
+      console.error("Fetching friends failed, ", error);
+    }
+  };
+  useEffect(() => {
+    fetchFriends();
+  }, []);
   return (
     <div className="flex flex-col w-1/4  p-4">
       <SearchBar value={filter} onChange={setFilter} />
 
       {/* <SidebarFriends friends={filterFriends} setIsDm={setIsDm} /> */}
-      <SidebarFriends friends={filterFriends} />
+      <SidebarFriends friends={friends} />
 
       <div className="flex justify-start p-">
         <button className="btn btn-neutral ml-10 ">
