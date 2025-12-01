@@ -1,14 +1,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { useSocket } from "../SocketContext";
 
 function Login() {
+  const { connectSocket } = useSocket();
+  const navigate = useNavigate();
 
-  const socket = useSocket();
-
+  // useEffect(() => {
+  //   if (!socket) return;
+  //   socket.emit("hello", {
+  //     message: "Hello from user",
+  //     id: socket.id,
+  //   });
+  // }, [socket]);
 
   const eyeOpen = (
     <svg
@@ -68,6 +75,7 @@ function Login() {
   );
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     username: "",
     password: "",
@@ -107,15 +115,19 @@ function Login() {
 
   const loginUser = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/auth/login",
-        credentials
+        credentials,
+        {
+          withCredentials: true,
+        }
       );
       if (response.status === 200) {
-        const user = response.data;
-        alert(`Welcome ${user.profilePic}`);
-        setCredentials({ username: "", password: "" });
-        setErrors({ username: "", password: "" });
+        setLoading(false);
+        const sock = connectSocket();
+        sock.emit("hello", { message: "User logged in", id: sock.id });
+        navigate("/home");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -138,13 +150,6 @@ function Login() {
 
     // if no errors, proceed with login
     loginUser();
-
-    useEffect(() => {
-      socket.on("connect", () => {
-        console.log("hello and Connected to socket server:   ", socket.id)
-      });
-      return () => socket.off("connect");
-    }, [socket]);
   };
 
   return (
@@ -226,10 +231,18 @@ function Login() {
             <div className="mt-1 text-xs text-red-500">{errors.password}</div>
           )}
         </div>
-
-        <button onClick={handleSubmit} className="btn btn-neutral w-full  mt-4">
-          Login
-        </button>
+        {loading ? (
+          <button className="btn btn-neutral w-full  mt-4 cursor-not-allowed">
+            <span class="loading loading-dots loading-sm bg-white"></span>
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            className="btn btn-neutral w-full  mt-4"
+          >
+            Login
+          </button>
+        )}
 
         <div className="text-center mt-8 px-2">Or Sign In using</div>
         <div className="flex justify-center rounded-full mx-24 py-6 btn btn-neutral items-center my-8">

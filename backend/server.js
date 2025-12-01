@@ -31,7 +31,8 @@ app.use("/home", userRoutes);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*", // allow all origins for now
+    origin: ["http://localhost:4500", "http://localhost:5173"], // allow all origins for now
+    credentials: true
   },
 });
 io.on("connection", (socket) => {
@@ -41,7 +42,7 @@ io.on("connection", (socket) => {
   })
   socket.on("disconnect", () => {
     console.log("User disconnect: ", socket.id)
-  })
+  });
 });
 
 connectDB()

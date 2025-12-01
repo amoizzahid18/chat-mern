@@ -5,16 +5,7 @@ import { useSocket } from './SocketContext.jsx'
 import { useEffect } from 'react';
 
 function Home() {
-  const socket = useSocket();
-  useEffect(()=>{
-    if(!socket) return;
-
-    socket.emit("hello", {
-      message: "Hello from user",
-      id: socket.id
-    })
-    
-  }, [])
+  
   // const [isDm, setIsDm] = useState(false);
   // const [isAddFriend, setIsAddFriend] = useState(false);
   return (

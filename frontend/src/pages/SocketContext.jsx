@@ -5,13 +5,21 @@ const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
   const socketRef = useRef(null);
-
-  if (!socketRef.current) {
-    socketRef.current = io("http://localhost:4500");
-  }
-
+  const connectSocket = () => {
+    if (!socketRef.current) {
+      socketRef.current = io("http://localhost:4500", {
+        withCredentials: true,
+        autoConnect: true,
+      });
+    }
+    return socketRef.current;
+  };
+    const value = {
+    socket: socketRef.current,
+    connectSocket,
+  };
   return (
-    <SocketContext.Provider value={socketRef.current}>
+    <SocketContext.Provider value={value}>
       {children}
     </SocketContext.Provider>
   );
