@@ -1,10 +1,27 @@
 import React from "react";
 import { useChatUI } from "../../ChatUIContext";
+import { useState } from "react";
+import { set } from "mongoose";
+import axios from "axios";
 
 // function WelcomeHome({setIsAddFriend}) {
 function WelcomeHome() {
   const { openAddFriend, viewProfile } = useChatUI();
-
+  const [loading, setLoading] = useState(false);
+  const deleteAccount = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:5000/home/delete-account",{
+        withCredentials: true
+      });
+      if (response.status === 200){
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  }
   return (
     <div className="h-full flex flex-col justify-center items-center">
       <div className="dropdown  w-full flex justify-end p-5">
@@ -50,7 +67,7 @@ function WelcomeHome() {
           >
             Add Friend
           </li>
-          <li className="btn btn-ghost w-full  flex justify-start pl-3 text-nowrap">
+          <li className="btn btn-ghost w-full  flex justify-start pl-3 text-nowrap" onClick={deleteAccount}>
             Delete Account
           </li>
           <dialog
@@ -73,8 +90,8 @@ function WelcomeHome() {
         </ul>
       </div>
       <div className="flex flex-col justify-center  items-center h-full">
-        <div className="text-lg">Welcome!</div>
-        <div className="text-sm">Chat with your closed ones now</div>
+        <div className="text-4xl font-black my-5">Welcome!</div>
+        <div className="text-2xl font-bold my-5">Chat with your closed ones now</div>
       </div>
     </div>
   );

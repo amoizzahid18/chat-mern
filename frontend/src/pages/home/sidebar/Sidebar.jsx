@@ -56,14 +56,14 @@ function Sidebar() {
     fetchFriends();
   }, []);
   return (
-    <div className="flex flex-col w-1/4  p-4">
+    <div className="flex flex-col w-1/4 px-2">
       <SearchBar value={filter} onChange={setFilter} />
 
       {/* <SidebarFriends friends={filterFriends} setIsDm={setIsDm} /> */}
       <SidebarFriends friends={filteredFriends} loading={loadingF} />
 
-      <div className="flex justify-start p-">
-        <button className="btn btn-neutral ml-10 ">
+      <div className="flex justify-start m-4">
+        <button className="btn btn-neutral  w-full">
           {loading ? (
             <button className="cursor-not-allowed px-10">
               <span class="loading loading-dots loading-sm bg-white"></span>

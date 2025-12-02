@@ -88,3 +88,9 @@ export const logout = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const validate = async (req, res) => {
+  res.status(200).json({
+    authenticated: true,
+    user: req.user,
+  })
+}
