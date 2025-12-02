@@ -14,10 +14,11 @@ function Sidebar() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
-  const filterFriends = useMemo(() => {
+  
+  const filteredFriends = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    if (!q) return mockFriends;
-    return mockFriends.filter((u) => u.fullname.toLowerCase().includes(q));
+    if (!q) return friends;
+    return friends.filter((u) => u.fullname.toLowerCase().includes(q));
   }, [filter]);
 
   const logoutUser = async () => {
@@ -59,7 +60,7 @@ function Sidebar() {
       <SearchBar value={filter} onChange={setFilter} />
 
       {/* <SidebarFriends friends={filterFriends} setIsDm={setIsDm} /> */}
-      <SidebarFriends friends={friends} />
+      <SidebarFriends friends={filteredFriends} loading={loadingF} />
 
       <div className="flex justify-start p-">
         <button className="btn btn-neutral ml-10 ">

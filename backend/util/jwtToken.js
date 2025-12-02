@@ -5,7 +5,7 @@ const generateTokenAndSetCookie = (userId, res) => {
     expiresIn: "1080s", // 18 minutes
   });
   res.cookie("jwt", token, {
-    maxAge: 3 * 60 * 1000, // 3 minute});
+    maxAge: 30 * 60 * 1000, // 3 minute});
     httpOnly: true, // prevent xss cross-site scripting attacks (js cannot access)
     sameSite: "strict", // prevent csrf cross-site request forgery attacks
     secure: process.env.NODE_ENV !== "development", // only send cookie over https in production

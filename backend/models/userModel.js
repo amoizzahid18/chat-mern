@@ -34,7 +34,11 @@ const userSchema = new mongoose.Schema({
   },
   profilePic: {
     type: String,
-    default: "",
+    default: function () {
+      return this.gender === "Male"
+        ? `https://avatar.iran.liara.run/public/boy?username=${this.username}`
+        : `https://avatar.iran.liara.run/public/girl?username=${this.username}`;
+    },
   },
   bio: {
     type: String,
