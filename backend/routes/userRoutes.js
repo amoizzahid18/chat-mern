@@ -10,7 +10,7 @@ import {
 import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
-router.get("/", protectRoute, getFriends)
+router.get("/friends", protectRoute, getFriends)
 router.get("/all-users", protectRoute, getAllUsersForFriendReq);
 router.delete("/delete-account", protectRoute, deleteAccount);
 router.post("/unfriend/:id", protectRoute, removeFriend);

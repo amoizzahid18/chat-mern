@@ -11,24 +11,27 @@ function WelcomeHome() {
   const deleteAccount = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/home/delete-account",{
-        withCredentials: true
-      });
-      if (response.status === 200){
+      const response = await axios.get(
+        "http://localhost:5000/home/delete-account",
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
       console.error(error);
     }
-  }
+  };
   return (
     <div className="h-full flex flex-col justify-center items-center">
-      <div className="dropdown  w-full flex justify-end p-5">
+      <div className="dropdown w-full flex justify-end p-5">
         <button
           tabIndex={0}
           role="button"
-          className=" btn btn-neutral flex justify-evenly items-center w-36"
+          className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-xl shadow-lg transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +39,7 @@ function WelcomeHome() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            class="size-6"
+            className="w-6 h-6"
           >
             <path
               strokeLinecap="round"
@@ -51,47 +54,39 @@ function WelcomeHome() {
           </svg>
           <span>Settings</span>
         </button>
+
         <ul
           tabIndex={0}
-          className="dropdown-content w-36 bg-base-200 py-3 px-2 mt-12"
+          className="dropdown-content  w-44 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl mt-12 flex flex-col gap-1 text-white"
         >
           <li
-            className="btn btn-ghost w-full flex justify-start pl-3"
+            className="px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer"
             onClick={viewProfile}
           >
             View Profile
           </li>
           <li
-            className="btn btn-ghost w-full flex justify-start pl-3"
+            className="px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer"
             onClick={openAddFriend}
           >
             Add Friend
           </li>
-          <li className="btn btn-ghost w-full  flex justify-start pl-3 text-nowrap" onClick={deleteAccount}>
+          <li
+            className="px-4 py-2 hover:bg-red-500/60 rounded-lg cursor-pointer"
+            onClick={deleteAccount}
+          >
             Delete Account
           </li>
-          <dialog
-            id="my_modal_5"
-            className="modal modal-bottom sm:modal-middle"
-          >
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Hello!</h3>
-              <p className="py-4">
-                Press ESC key or click the button below to close
-              </p>
-              <div className="modal-action">
-                <form method="dialog">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button className="btn">Close</button>
-                </form>
-              </div>
-            </div>
-          </dialog>
         </ul>
       </div>
-      <div className="flex flex-col justify-center  items-center h-full">
-        <div className="text-4xl font-black my-5">Welcome!</div>
-        <div className="text-2xl font-bold my-5">Chat with your closed ones now</div>
+
+      <div className="flex flex-col justify-center items-center h-full  text-center px-4">
+        <h1 className="text-5xl sm:text-6xl font-extrabold text-white drop-shadow-lg animate-fadeIn">
+          Welcome!
+        </h1>
+        <p className="text-2xl sm:text-3xl font-semibold text-white/90 mt-4 animate-fadeIn delay-200">
+          Chat with your loved ones now
+        </p>
       </div>
     </div>
   );

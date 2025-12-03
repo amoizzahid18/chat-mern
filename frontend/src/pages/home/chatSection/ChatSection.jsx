@@ -11,13 +11,11 @@ function ChatSection() {
   const {isDm, isAddFriend, isViewProfile} = useChatUI();
 
   return (
-    <div className=" w-full bg-gradient-to-tl  from-teal-300 to-pink-300 flex flex-col justify-center ">
+      <div className="  w-full bg-transparent flex flex-col text-white">
       {!isDm && !isAddFriend && !isViewProfile ? (
-        // <WelcomeHome setIsAddFriend={setIsAddFriend} />
         <WelcomeHome  />
       ) : isDm && !isAddFriend && !isViewProfile ? (
         <div className="w-full h-full">
-          {/* <ChatName setIsDm={setIsDm} /> */}
           <ChatName  />
           <ChatBox />
         </div>

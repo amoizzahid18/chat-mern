@@ -3,32 +3,33 @@ import FriendToBe from "./FriendToBe.jsx";
 import { useState } from "react";
 import { mockFriends } from "./mockFriends.js";
 function ShowFriendsToBe({ users, loading }) {
-  //   useEffect(()=>{},[users, filteredUsers]);
-  return loading ? 
-          <>
-            <span className="loading loading-dots loading-lg"></span>
-          </>
-         : 
-   users.length === 0 ? (
-    <div className=" text-3xl w-full font-bold h-[500px] flex justify-center items-center ">
-      No users found
+  
+  return loading ? (
+  <div className="w-full h-[500px] flex justify-center items-center">
+    <span className="loading loading-dots loading-xl text-purple-300"></span>
+  </div>
+) : users.length === 0 ? (
+  <div className="w-full h-[500px] flex justify-center items-center text-2xl font-semibold text-white/80">
+    No users found
+  </div>
+) : (
+  <div className="mx-4 p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg max-h-[500px] overflow-y-auto">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      {users.map((user) => (
+        <FriendToBe
+          key={user._id}
+          id={user._id}
+          fullname={user.fullname}
+          username={user.username}
+          profilePic={user.profilePic}
+          gender={user.gender}
+          className="transition transform hover:scale-105 duration-200"
+        />
+      ))}
     </div>
-  ) : (
-    <div className="mx-4 bg-base-300 shadow-md rounded-box ">
-      <div className="p-4 grid   md:grid-cols-3 lg:grid-cols-5   gap-6 max-h-[500px] duration-75 overflow-y-scroll h-full">
-        
-          {users.map((user) => (
-            <FriendToBe
-              // key={user.username}
-              fullname={user.fullname}
-              username={user.username}
-              profilePic={user.profilePic}
-            />
-          ))}
-        
-      </div>
-    </div>
-  );
+  </div>
+);
+
 }
 
 export default ShowFriendsToBe;

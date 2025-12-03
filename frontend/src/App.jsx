@@ -45,7 +45,9 @@ function App() {
   const { user, loading } = useAuth();
   return (
     <Router>
-      <div className="bg-gradient-to-b from-purple-700 to-purple-400 min-h-screen w-full flex justify-center items-center">
+      {/* <div className="bg-gradient-to-b from-purple-700 to-purple-400 min-h-screen w-full flex justify-center items-center"> */}
+      <div class="min-h-screen w-full flex justify-center items-center">
+
         {loading ? (
           <Loader />
         ) : (

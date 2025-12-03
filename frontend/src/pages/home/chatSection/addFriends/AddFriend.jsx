@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import SearchBar from "../../SearchBar";
 import ShowFriendsToBe from "./ShowFriendsToBe";
-import { mockFriends } from "./mockFriends.js";
 import axios from "axios";
 
 function AddFriend() {
@@ -19,7 +18,6 @@ function AddFriend() {
         const user = response.data;
         console.log(user);
         setUsers(user);
-        console.log(users);
         setLoading(false);
       }
     } catch (error) {

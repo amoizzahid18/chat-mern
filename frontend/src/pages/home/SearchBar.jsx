@@ -7,7 +7,7 @@ function SearchBar({ value = "", onChange = () => {} }) {
   const new_users = () => {
   }
   return (
-    <label className="input w-full my-4  rounded-full border-none">
+    <label className="input mb-4 bg-white/20 placeholder-white/70 text-white border border-white/30   w-full my-4  rounded-full shadow-md">
       <input
         type="search"
         placeholder="Search"
