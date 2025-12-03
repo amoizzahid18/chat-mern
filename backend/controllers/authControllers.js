@@ -89,8 +89,5 @@ export const logout = async (req, res) => {
   }
 };
 export const validate = async (req, res) => {
-  res.status(200).json({
-    authenticated: true,
-    user: req.user,
-  })
-}
+  return res.status(200).json({ user: req.user });
+};

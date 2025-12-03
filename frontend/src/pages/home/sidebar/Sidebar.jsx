@@ -1,19 +1,17 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SidebarFriends from "./SidebarFriends";
 import SearchBar from "../SearchBar";
-import { mockFriends } from "../chatSection/addFriends/mockFriends";
 import { useSocket } from "../../SocketContext";
+import { useAuth } from "../../AuthContext";
 
-// function Sidebar( {setIsDm} ) {
 function Sidebar() {
   const { connectSocket } = useSocket();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(false);
-  const navigate = useNavigate();
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user, setUser } = useAuth();
   
   const filteredFriends = useMemo(() => {
     const q = filter.trim().toLowerCase();
@@ -22,25 +20,26 @@ function Sidebar() {
   }, [filter]);
 
   const logoutUser = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:5000/auth/logout", {
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        setLoading(false);
-        navigate("/login");
-        const sock = connectSocket();
-        sock.disconnect();
+    if (user)
+      try {
+        setLoading(true);
+        const response = await axios.get("http://localhost:5000/auth/logout", {
+          withCredentials: true,
+        });
+        if (response.status === 200) {
+          setLoading(false);
+          setUser(null);
+          const sock = connectSocket();
+          sock.disconnect();
+        }
+      } catch (error) {
+        console.error("Logout failed", error);
       }
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
   };
   const fetchFriends = async () => {
     try {
       setLoadingF(true);
-      const response = await axios.get("http://localhost:5000/home",{
+      const response = await axios.get("http://localhost:5000/home", {
         withCredentials: true,
       });
       if (response.status === 200) {
@@ -63,13 +62,13 @@ function Sidebar() {
       <SidebarFriends friends={filteredFriends} loading={loadingF} />
 
       <div className="flex justify-start m-4">
-        <button className="btn btn-neutral  w-full">
+        
           {loading ? (
-            <button className="cursor-not-allowed px-10">
+            <button className="btn btn-neutral  w-full cursor-not-allowed px-10">
               <span class="loading loading-dots loading-sm bg-white"></span>
             </button>
           ) : (
-            <>
+            <button onClick={logoutUser} className="btn btn-neutral  w-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -84,12 +83,12 @@ function Sidebar() {
                   d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
                 />
               </svg>
-              <button onClick={logoutUser} className="cursor-pointer">
+              <div  className="w-full cursor-pointer">
                 Logout
-              </button>
-            </>
+              </div>
+            </button>
           )}
-        </button>
+        
       </div>
     </div>
   );

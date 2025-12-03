@@ -1,4 +1,3 @@
-import React from "react";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Home from "./pages/Home";
@@ -8,8 +7,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useAuth } from "./pages/AuthContext";
 
 function ProtectedRoute({ user, children }) {
   if (!user) return <Navigate to="/login" replace />;
@@ -44,31 +42,7 @@ function Loader() {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const validateUser = async () => {
-    try {
-      setLoading(true);
-      setUser(null);
-      const response = await axios.get("http://localhost:5000/auth/validate", {
-        withCredentials: true,
-      });
-
-      if (response.data?.authenticated) {
-        setUser(response.data.user);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    } catch (error) {
-      setUser(null);
-      setLoading(false);
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    validateUser();
-  }, []);
+  const { user, loading } = useAuth();
   return (
     <Router>
       <div className="bg-gradient-to-b from-purple-700 to-purple-400 min-h-screen w-full flex justify-center items-center">
