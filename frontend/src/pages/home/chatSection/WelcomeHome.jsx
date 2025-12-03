@@ -31,7 +31,7 @@ function WelcomeHome() {
         <button
           tabIndex={0}
           role="button"
-          className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-xl shadow-lg transition-all duration-300"
+          className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-xl shadow-lg border-none transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ function WelcomeHome() {
             Add Friend
           </li>
           <li
-            className="px-4 py-2 hover:bg-red-500/60 rounded-lg cursor-pointer"
+            className="px-4 py-2 hover:bg-red-500/30 rounded-lg cursor-pointer"
             onClick={deleteAccount}
           >
             Delete Account

@@ -7,12 +7,13 @@ function SearchBar({ value = "", onChange = () => {} }) {
   const new_users = () => {
   }
   return (
-    <label className="input mb-4 bg-white/20 placeholder-white/70 text-white border border-white/30   w-full my-4  rounded-full shadow-md">
+    <label className="input mb-4 bg-white/10 border outline-none border-white/30 rounded-xl focus-within:border-purple-400 transition   w-full my-4  shadow-md">
       <input
         type="search"
         placeholder="Search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        className="bg-transparent w-full placeholder-white/60 text-white outline-none"
       />
 
       <button className="hover:cursor-pointer scale-115 p-2  flex justify-center items-center rounded-full">

@@ -90,11 +90,10 @@ function Signup() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     // setCredentials((c) => Object.assign( c, {[name]: value }));
-    setCredentials({...credentials, [name]: value})
+    setCredentials({ ...credentials, [name]: value });
     // Validate input
     validateInput(name, value);
   };
-    
 
   const validateInput = (name, value) => {
     const fullnamePattern = /^[A-Za-z\s]{3,30}$/;
@@ -158,7 +157,7 @@ function Signup() {
   const signupUser = async () => {
     try {
       setLoading(true);
-      console.log(credentials)
+      console.log(credentials);
       const response = await axios.post(
         "http://localhost:5000/auth/signup",
         credentials
@@ -166,7 +165,7 @@ function Signup() {
       if (response.status === 201) {
         setLoading(false);
         const user = response.data;
-        console.log(user)
+        console.log(user);
         Navigate("/login");
         setCredentials({
           fullname: "",
@@ -242,331 +241,210 @@ function Signup() {
   };
 
   return (
-    <>
-      <div className=" bg-base-200 border-base-300 flex justify-center items-center  rounded-box w-3/4 border p-10">
-        <div className="w-full flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold text-center mb-12">Sign Up</h1>
+    <div className="flex w-full justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4">
+      <div className="w-full max-w-4xl bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl p-10">
+        <h1 className="text-4xl font-extrabold text-center text-white tracking-wide mb-10">
+          Create Your Account
+        </h1>
 
-          <div className="flex flex-row w-full mb-4">
-            <div className="w-full mx-6">
-              {/* Full Name */}
-              <div className="mb-4">
-                <label className="label block">Full Name</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.0"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </g>
-                  </svg>
-
-                  <input
-                    // className="input validator"
-                    type="text"
-                    required
-                    name="fullname"
-                    value={credentials.fullname}
-                    onChange={handleChange}
-                    placeholder="Harley Quinn"
-                    minLength="3"
-                    maxLength="30"
-                  />
-                </label>
-                {errors.fullname && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.fullname}
-                  </div>
-                )}
-              </div>
-
-              {/* Username */}
-              <div className="my-4">
-                <label className="label block">Username</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.5"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </g>
-                  </svg>
-                  <input
-                    type="text"
-                    //   className="input validator"
-                    required
-                    onChange={handleChange}
-                    value={credentials.username}
-                    name="username"
-                    placeholder="quinn123"
-                    pattern="[A-Za-z][A-Za-z0-9\-]*"
-                    minLength="3"
-                    maxLength="30"
-                    title="Only letters, numbers or dash"
-                  />
-                </label>
-                {errors.username && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.username}
-                  </div>
-                )}
-              </div>
-
-              {/* Profile Picture */}
-              <div className="my-4">
-                <label className="label block">Profile Picture</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.5"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                    </g>
-                  </svg>
-                  <input
-                    type="url"
-                    name="profilePicture"
-                    value={credentials.profilePicture}
-                    onChange={handleChange}
-                    placeholder="https://"
-                    pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9-].*[a-zA-Z0-9])?.)+[a-zA-Z].*$"
-                    title="Must be valid URL"
-                  />
-                </label>
-                {errors.profilePicture && (
-                  <div className="mt-1  text-xs text-warning">
-                    {errors.profilePicture}
-                  </div>
-                )}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Column 1 */}
+          <div>
+            {/* Full Name */}
+            <label className="text-purple-200 font-semibold text-sm">
+              Full Name
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* your same SVG */}
+              <input
+                type="text"
+                name="fullname"
+                value={credentials.fullname}
+                onChange={handleChange}
+                placeholder="Harley Quinn"
+                minLength="3"
+                maxLength="30"
+                required
+                className="bg-transparent w-full text-white outline-none"
+              />
             </div>
+            {errors.fullname && (
+              <span className="text-red-400 text-xs">{errors.fullname}</span>
+            )}
 
-            <div className="divider divider-horizontal py-8"></div>
-
-            <div className="w-full mx-6">
-              {/* Email */}
-              <div className="mb-4">
-                <label className="label block">Email</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.5"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                    </g>
-                  </svg>
-                  <input
-                    //   className="input validator"
-                    type="email"
-                    name="email"
-                    value={credentials.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="quinn.harley@yahoo.com"
-                  />
-                </label>
-                {errors.email && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.email}
-                  </div>
-                )}
-              </div>
-
-              {/* Password */}
-              <div className="my-4">
-                <label className="label block">Password</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.5"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
-                      <circle
-                        cx="16.5"
-                        cy="7.5"
-                        r=".5"
-                        fill="currentColor"
-                      ></circle>
-                    </g>
-                  </svg>
-
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                    required
-                    placeholder="margot123"
-                    minLength="6"
-                    title="Must be more than 6 characters, including number, lowercase letter"
-                  />
-
-                  {showPassword ? eyeOpen : eyeClose}
-                </label>
-                {errors.password && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.password}
-                  </div>
-                )}
-              </div>
-
-              {/* Confirm Password */}
-              <div className="my-4">
-                <label className="label block">Confirm Password</label>
-                <label className="input  w-full">
-                  <svg
-                    className="h-[1em] opacity-50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      strokeWidth="2.5"
-                      fill="none"
-                      stroke="currentColor"
-                    >
-                      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
-                      <circle
-                        cx="16.5"
-                        cy="7.5"
-                        r=".5"
-                        fill="currentColor"
-                      ></circle>
-                    </g>
-                  </svg>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    value={credentials.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    placeholder="margot123"
-                    minLength="6"
-                    title="Must be same as password"
-                  />
-                  {showPassword ? eyeOpen : eyeClose}
-                </label>
-                {errors.confirmPassword && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.confirmPassword}
-                  </div>
-                )}
-              </div>
+            {/* Username */}
+            <label className="text-purple-200 font-semibold text-sm mt-6 block">
+              Username
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* svg */}
+              <input
+                type="text"
+                name="username"
+                onChange={handleChange}
+                value={credentials.username}
+                placeholder="@quinn123"
+                pattern="[A-Za-z][A-Za-z0-9\-]*"
+                minLength="3"
+                maxLength="30"
+                required
+                className="bg-transparent w-full text-white outline-none"
+              />
             </div>
+            {errors.username && (
+              <span className="text-red-400 text-xs">{errors.username}</span>
+            )}
 
-            <div className="divider divider-horizontal py-8"></div>
+            {/* Profile Picture */}
+            <label className="text-purple-200 font-semibold text-sm mt-6 block">
+              Profile Picture URL
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* svg */}
+              <input
+                type="url"
+                name="profilePicture"
+                value={credentials.profilePicture}
+                onChange={handleChange}
+                placeholder="https://"
+                className="bg-transparent w-full text-white outline-none"
+              />
+            </div>
+            {errors.profilePicture && (
+              <span className="text-yellow-400 text-xs">
+                {errors.profilePicture}
+              </span>
+            )}
+          </div>
 
-            <div className="w-full mx-6">
-              {/* Gender*/}
-              <div className="mb-4">
-                <label className="label mb-2 block">Gender</label>
-                <div className="flex  w-full">
-                  <label className="w-full flex justify-center">
-                    <span className="mr-2">Male</span>
-                    <img src={male} width={24} className="h-6 mr-2" />
-                    <input
-                      className="checkbox checkbox-neutral rounded"
-                      type="radio"
-                      name="gender"
-                      value="Male"
-                      onChange={handleChange}
-                    />
-                  </label>
+          {/* Column 2 */}
+          <div>
+            {/* Email */}
+            <label className="text-purple-200 font-semibold text-sm">
+              Email
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* svg */}
+              <input
+                type="email"
+                name="email"
+                value={credentials.email}
+                onChange={handleChange}
+                placeholder="quinn@example.com"
+                required
+                className="bg-transparent w-full text-white outline-none"
+              />
+            </div>
+            {errors.email && (
+              <span className="text-red-400 text-xs">{errors.email}</span>
+            )}
 
-                  <span className="divider divider-horizontal"></span>
+            {/* Password */}
+            <label className="text-purple-200 font-semibold text-sm mt-6 block">
+              Password
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* svg */}
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                minLength="6"
+                required
+                className="bg-transparent w-full text-white outline-none"
+              />
+              {showPassword ? eyeOpen : eyeClose}
+            </div>
+            {errors.password && (
+              <span className="text-red-400 text-xs">{errors.password}</span>
+            )}
 
-                  <label className="w-full flex justify-center">
-                    <span className="mr-2">Female</span>
-                    <img src={female} width={28} className="h-6 mr-2" />
-                    <input
-                      className="checkbox checkbox-neutral rounded"
-                      type="radio"
-                      name="gender"
-                      value="Female"
-                      onChange={handleChange}
-                    />
-                  </label>
-                </div>
-                {errors.gender && (
-                  <div className="mt-1  text-xs text-red-500">
-                    {errors.gender}
-                  </div>
-                )}
-              </div>
+            {/* Confirm Password */}
+            <label className="text-purple-200 font-semibold text-sm mt-6 block">
+              Confirm Password
+            </label>
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 mt-1 focus-within:border-purple-400 transition">
+              {/* svg */}
+              <input
+                type={showPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={credentials.confirmPassword}
+                onChange={handleChange}
+                placeholder="••••••••"
+                minLength="6"
+                required
+                className="bg-transparent w-full text-white outline-none"
+              />
+              {showPassword ? eyeOpen : eyeClose}
+            </div>
+            {errors.confirmPassword && (
+              <span className="text-red-400 text-xs">
+                {errors.confirmPassword}
+              </span>
+            )}
+          </div>
 
-              {loading ? (
-                <button className="btn btn-neutral w-full  mt-4 cursor-not-allowed">
-                  <span class="loading loading-dots loading-sm bg-white"></span>
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="btn btn-neutral w-full  mt-4"
-                >
-                  Signup
-                </button>
-              )}
-              <div className="divider mt-8 px-6"></div>
-              <div className="text-center mt-4 px-2">
-                Already have an account?
-                <Link
-                  to={"/login"}
-                  className="mx-2 text-purple-700 link focus:translate-y-1 hover:text-purple-900 transition duration-100"
-                >
-                  Login
-                </Link>
-              </div>
+          {/* Column 3 */}
+          <div>
+            {/* Gender */}
+            <label className="text-purple-200 font-semibold text-sm">
+              Gender
+            </label>
+            <div className="flex gap-6 mt-3">
+              <label className="flex items-center gap-2 cursor-pointer text-white">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  onChange={handleChange}
+                  className="radio radio-sm"
+                />
+                <span>Male</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer text-white">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  onChange={handleChange}
+                  className="radio radio-sm"
+                />
+                <span>Female</span>
+              </label>
+            </div>
+            {errors.gender && (
+              <span className="text-red-400 text-xs">{errors.gender}</span>
+            )}
+
+            {/* Submit */}
+            {loading ? (
+              <button className="btn btn-disabled w-full mt-10">
+                <span className="loading loading-spinner"></span>
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="mt-10 w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-bold shadow-lg transition transform hover:scale-[1.02]"
+              >
+                Sign Up
+              </button>
+            )}
+
+            <div className="text-center text-purple-200 mt-6">
+              Already have an account?
+              <Link
+                to="/login"
+                className="ml-2 text-white font-semibold hover:underline hover:text-purple-300 transition"
+              >
+                Login
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

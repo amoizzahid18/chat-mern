@@ -20,22 +20,25 @@ function PublicRoute({ user, children }) {
 }
 function Loader() {
   return (
-    <div className="bg-gradient-to-b from-purple-700 to-purple-400 min-h-screen w-full flex flex-col justify-center items-center gap-6">
+    <div
+      className="w-full min-h-screen flex flex-col justify-center items-center gap-6
+                bg-gradient-to-br from-gray-900 via-purple-900 to-black"
+    >
       <div className="flex gap-3">
-        <span className="loading loading-ball loading-lg"></span>
-        <span className="loading loading-ball loading-lg"></span>
-        <span className="loading loading-ball loading-lg"></span>
+        <span className="loading loading-ball bg-white/80 loading-lg"></span>
+        <span className="loading loading-ball bg-white/80 loading-lg"></span>
+        <span className="loading loading-ball bg-white/80 loading-lg"></span>
       </div>
       <div className="flex gap-3">
-        <span className="loading loading-ball loading-md"></span>
-        <span className="loading loading-ball loading-md"></span>
-        <span className="loading loading-ball loading-md"></span>
-        <span className="loading loading-ball loading-md"></span>
+        <span className="loading loading-ball bg-white/80 loading-md"></span>
+        <span className="loading loading-ball bg-white/80 loading-md"></span>
+        <span className="loading loading-ball bg-white/80 loading-md"></span>
+        <span className="loading loading-ball bg-white/80 loading-md"></span>
       </div>
       <div className="flex gap-3">
-        <span className="loading loading-ball loading-sm"></span>
-        <span className="loading loading-ball loading-sm"></span>
-        <span className="loading loading-ball loading-sm"></span>
+        <span className="loading loading-ball bg-white/80 loading-sm"></span>
+        <span className="loading loading-ball bg-white/80 loading-sm"></span>
+        <span className="loading loading-ball bg-white/80 loading-sm"></span>
       </div>
     </div>
   );
@@ -47,7 +50,6 @@ function App() {
     <Router>
       {/* <div className="bg-gradient-to-b from-purple-700 to-purple-400 min-h-screen w-full flex justify-center items-center"> */}
       <div class="min-h-screen w-full flex justify-center items-center">
-
         {loading ? (
           <Loader />
         ) : (

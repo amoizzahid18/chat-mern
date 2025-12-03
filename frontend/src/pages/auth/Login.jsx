@@ -146,8 +146,8 @@ function Login() {
 
   return (
     <>
-      <div className="w-full min-h-screen flex justify-center items-center bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-500 p-4">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-full shadow-2xl max-w-md p-8  flex flex-col">
+      <div className="w-full min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl w-full shadow-2xl max-w-md p-8 flex flex-col">
           <h1 className="text-4xl font-extrabold text-center text-white mb-8 drop-shadow-lg">
             Login
           </h1>
@@ -157,22 +157,20 @@ function Login() {
             <label className="block text-white font-semibold mb-2">
               Username
             </label>
-            <div className="flex items-center bg-white/20 rounded-lg px-3 py-2 border border-white/30 focus-within:ring-2 focus-within:ring-purple-400">
+            <div className="flex items-center px-3 py-2 gap-2 bg-white/10 border border-white/30 rounded-xl focus-within:border-purple-400 transition">
               <svg
-                className="h-5 w-5 text-white opacity-70 mr-2"
+                className="h-5 w-5 text-white opacity-70"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
                 viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
               >
-                <g
+                <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </g>
+                  d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 11a4 4 0 110-8 4 4 0 010 8z"
+                />
               </svg>
               <input
                 type="text"
@@ -181,41 +179,35 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="quinn123"
-                className="bg-transparent text-white placeholder-white/70 outline-none w-full"
+                className="bg-transparent w-full text-white placeholder-white/60 outline-none"
               />
             </div>
             {errors.username && (
-              <div className="mt-1 text-sm text-red-800">{errors.username}</div>
+              <p className="mt-1 text-xs text-red-400">{errors.username}</p>
             )}
           </div>
 
           {/* Password */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-white font-semibold mb-2">
               Password
             </label>
-            <div className="flex items-center bg-white/20 rounded-lg px-3 py-2 border border-white/30 focus-within:ring-2 focus-within:ring-purple-400">
+            <div className="flex items-center px-3 py-2 gap-2 bg-white/10 border border-white/20 rounded-xl focus-within:border-purple-400 transition">
               <svg
-                className="h-5 w-5 text-white opacity-70 mr-2"
+                className="h-5 w-5 text-white opacity-70"
                 xmlns="http://www.w3.org/2000/svg"
+                fill="none"
                 viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
               >
-                <g
+                <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
-                  <circle
-                    cx="16.5"
-                    cy="7.5"
-                    r=".5"
-                    fill="currentColor"
-                  ></circle>
-                </g>
+                  d="M12 15c3.866 0 7-2.239 7-5s-3.134-5-7-5-7 2.239-7 5 3.134 5 7 5zM3 20v-2c0-2.761 3.134-5 7-5 3.866 0 7 2.239 7 5v2"
+                />
               </svg>
+
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -223,34 +215,35 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="margot123"
-                className="bg-transparent text-white placeholder-white/70 outline-none w-full"
+                className="bg-transparent w-full text-white placeholder-white/60 outline-none"
               />
+
               {showPassword ? eyeOpen : eyeClose}
             </div>
             {errors.password && (
-              <div className="mt-1 text-sm text-red-800">{errors.password}</div>
+              <p className="mt-1 text-xs text-red-400">{errors.password}</p>
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Login Button */}
           {loading ? (
-            <button className="btn bg-white/20 text-white shadow-sm shadow-white w-full pointer-events-none border-2 flex justify-center focus-within:ring-2 focus-within:ring-gray-50" >
+            <button className="btn bg-white/20 text-white w-full pointer-events-none border-2 flex justify-center shadow-md">
               <span className="loading loading-dots loading-sm text-white"></span>
             </button>
           ) : (
             <button
               onClick={handleSubmit}
-              className="btn bg-purple-700 hover:bg-purple-600 border-none text-lg text-white w-full mt-4 shadow-lg transition rounded-md py-1 duration-200"
+              className="btn bg-purple-700 hover:bg-purple-600 border-none text-lg text-white w-full mt-4 shadow-lg py-2 rounded-xl transition"
             >
               Login
             </button>
           )}
 
-          {/* OR Divider */}
-          <div className="text-center text-white/80 my-6">Or Sign In using</div>
+          {/* Divider */}
+          <div className="text-center text-white/70 my-6">Or sign in with</div>
 
-          {/* Google Login */}
-          <div className="flex justify-center items-center gap-3 w-full bg-white/20 hover:bg-white/30 transition px-6 py-3 rounded-full cursor-pointer text-white mb-6 shadow-md">
+          {/* Google button */}
+          <button className="flex justify-center items-center gap-3 w-full bg-white/20 hover:bg-white/30 px-6 py-3 rounded-full cursor-pointer text-white shadow-md transition">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"
@@ -266,14 +259,14 @@ function Login() {
               </g>
             </svg>
             <span className="font-semibold ">Sign in with Google</span>
-          </div>
+          </button>
 
           {/* Footer */}
-          <div className="text-center mt-2 text-white/80">
+          <div className="text-center text-purple-200 mt-6">
             Don't have an account?
             <Link
-              to={"/signup"}
-              className="ml-2 text-purple-800 text-lg hover:text-purple-600 hover:underline font-semibold transition duration-150"
+              to="/signup"
+              className="ml-2 text-white font-semibold hover:underline hover:text-purple-300 transition"
             >
               Register
             </Link>

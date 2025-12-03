@@ -7,7 +7,9 @@ export const getFriends = async (req, res) => {
       .populate("friends")
       .select("-password");
     if (!user) {
-      return res.status(404).json({ message: `User not found with id ${userId}` });
+      return res
+        .status(404)
+        .json({ message: `User not found with id ${userId}` });
     }
     res.status(200).json(user.friends);
   } catch (error) {
@@ -47,23 +49,28 @@ export const addFriend = async (req, res) => {
   try {
     const { id } = req.params;
     const senderId = req.user._id;
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
+    if (id === senderId.toString()) {
+      return res.status(400).json({ message: "You cannot add yourself" });
     }
+    const user = await User.findById(id);
     const sender = await User.findById(senderId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     if (!sender) {
-      return res.status(400).json({ message: "You are not a user" });
+      return res.status(404).json({ message: "Sender not found" });
     }
     if (sender.friends.includes(id)) {
       return res.status(400).json({ message: "Already friends" });
     }
     sender.friends.push(id);
+    user.friends.push(senderId);
     await sender.save();
+    await user.save();
     return res.status(201).json({ message: "Friend added successfully" });
   } catch (error) {
-    console.error("Error while adding friend", error);
-    return res.status(500).json({ message: error.message });
+    console.error("Error while adding friend", error.message);
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
