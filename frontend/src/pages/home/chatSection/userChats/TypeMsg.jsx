@@ -1,47 +1,63 @@
-import React from 'react'
-
 function TypeMsg() {
   return (
-    <div className=" bg-transparent flex flex-row justify-between items-center  mx-4 my-4">
-        <div className="input rounded-full mr-4 cursor-default w-full">
-          <input type="text" placeholder="Type here" className=" w-full " />
-          <button className="btn border-none bg-transparent   btn-circle ">
-            <input type="file" className="hidden" />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              class="size-6"
-              
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13"
-              />
-            </svg>
-          </button>
-        </div>
-        <button className="btn btn-neutral scale-80">
+    <div className="flex items-center gap-3 mx-4 my-4">
+
+      {/* Message Input */}
+      <div className="flex items-center w-full bg-white/20 backdrop-blur-md border border-white/30 
+                      rounded-full px-4 py-2 shadow-md transition-all duration-200
+                      focus-within:ring-2 focus-within:ring-purple-400">
+        
+        <input
+          type="text"
+          placeholder="Type a message..."
+          className="w-full bg-transparent text-white placeholder-white/70 outline-none"
+        />
+
+        {/* File Upload */}
+        <label className="cursor-pointer flex items-center justify-center p-2 rounded-full 
+                           hover:bg-white/20 transition">
+          <input type="file" className="hidden" />
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            class="size-6"
+            strokeWidth="2"
+            stroke="white"
+            className="w-6 h-6 opacity-70 hover:opacity-100 transition"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13"
+              d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32"
             />
           </svg>
-        </button>
+        </label>
       </div>
-  )
+
+      {/* Send Button */}
+      <button
+        className="flex items-center justify-center p-3 rounded-full 
+                   bg-purple-600 hover:bg-purple-700 text-white shadow-md
+                   transition-all duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94"
+          />
+        </svg>
+      </button>
+    </div>
+  );
 }
 
-export default TypeMsg
+export default TypeMsg;

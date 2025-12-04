@@ -6,10 +6,10 @@ function ChatName() {
   const { goHome, viewProfile } = useChatUI();
   return (
     <>
-      <div className="flex flex-row justify-start bg-white items-center">
+      <div className="flex flex-row justify-start bg-transparent items-center">
         <button
           onClick={goHome}
-          className="ml-4 hover:bg-base-200 hover:shadow-md cursor-pointer  rounded-full"
+          className="ml-4 hover:bg-white/10 p-2 hover:shadow-md cursor-pointer  rounded-full"
         >
           <svg
             className="h-[1.5em] "
@@ -19,6 +19,7 @@ function ChatName() {
             stroke-width="1.5"
             stroke="currentColor"
             class="size-6"
+            color="white"
           >
             <path
               stroke-linecap="round"
@@ -39,7 +40,7 @@ function ChatName() {
             onClick={viewProfile}>Dio Lupa</div>
             <div className="text-xs opacity-70">Online</div>
           </div>
-          <button className="btn btn-square btn-ghost">
+          <button className="btn btn-square bg-transparent shadow-none border-none hover:bg-white/10 text-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

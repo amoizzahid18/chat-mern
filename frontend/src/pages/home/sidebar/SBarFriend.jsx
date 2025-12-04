@@ -5,7 +5,7 @@ function SBarFriend({ profilePic, fullname, bio }) {
   const { openDm } = useChatUI();
   return (
     <div
-      className="flex h-16 hover:bg-base-300 duration-75 justify-start items-center"
+      className="flex h-16 hover:bg-white/30 duration-75 justify-start items-center"
       onClick={openDm}
     >
       <div>

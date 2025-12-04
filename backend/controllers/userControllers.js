@@ -20,13 +20,22 @@ export const getFriends = async (req, res) => {
 export const getAllUsersForFriendReq = async (req, res) => {
   try {
     const userId = req.user._id;
-    const users = await User.find({ _id: { $ne: userId } }).select("-password");
+    const currentUser = await User.findById(userId).select("friends");
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const users = await User.find({
+      _id: { $nin: [userId, ...currentUser.friends] }
+    }).select("-password");
+
     res.status(200).json(users);
+
   } catch (error) {
     console.error("Error fetching users for friend request:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 export const deleteAccount = async (req, res) => {
   try {
     const userId = req.user._id;

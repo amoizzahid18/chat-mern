@@ -17,7 +17,7 @@ function Sidebar() {
     const q = filter.trim().toLowerCase();
     if (!q) return friends;
     return friends.filter((u) => u.fullname.toLowerCase().includes(q));
-  }, [filter]);
+  }, [filter, friends]);
 
   const logoutUser = async () => {
     if (user)
@@ -38,20 +38,24 @@ function Sidebar() {
       }
     else setUser(null);
   };
+  
   const fetchFriends = async () => {
-    try {
-      setLoadingF(true);
-      const response = await axios.get("http://localhost:5000/home/friends", {
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        const friends = response.data;
-        setFriends(friends);
+    if (user)
+      try {
+        setLoadingF(true);
+        const response = await axios.get("http://localhost:5000/home/friends", {
+          withCredentials: true,
+        });
+        if (response.status === 200) {
+          const friends = response.data;
+          setFriends(friends);
+          console.log(friends)
+        }
+      } catch (error) {
+        console.error("Fetching friends failed, ", error);
+      } finally {
         setLoadingF(false);
       }
-    } catch (error) {
-      console.error("Fetching friends failed, ", error);
-    }
   };
   useEffect(() => {
     fetchFriends();
