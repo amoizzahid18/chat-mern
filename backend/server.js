@@ -31,17 +31,17 @@ app.use("/home", userRoutes);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:4500", "http://localhost:5173"], // allow all origins for now
-    credentials: true
+    origin: "http://localhost:5173", // your frontend
+    credentials: true,
   },
 });
 io.on("connection", (socket) => {
   console.log("New Client connected: ", socket.id);
   socket.on("hello", (data) => {
-    console.log(data)
-  })
+    console.log(data);
+  });
   socket.on("disconnect", () => {
-    console.log("User disconnect: ", socket.id)
+    console.log("User disconnect: ", socket.id);
   });
 });
 

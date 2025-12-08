@@ -7,7 +7,6 @@ function AddFriend() {
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -16,7 +15,6 @@ function AddFriend() {
       });
       if (response.status === 200) {
         const user = response.data;
-        console.log(user);
         setUsers(user);
         setLoading(false);
       }
@@ -46,7 +44,7 @@ function AddFriend() {
       <div className="px-4">
         <SearchBar value={filter} onChange={setFilter} />
       </div>
-      <ShowFriendsToBe users={filteredUsers} loading={loading} />
+      <ShowFriendsToBe users={filteredUsers} refreshUsers={fetchUsers} loading={loading} />
     </div>
   );
 }

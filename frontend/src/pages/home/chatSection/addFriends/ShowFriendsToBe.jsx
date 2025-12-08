@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import FriendToBe from "./FriendToBe.jsx";
 import { useState } from "react";
 import { mockFriends } from "./mockFriends.js";
-function ShowFriendsToBe({ users, loading }) {
+function ShowFriendsToBe({ users, refreshUsers, loading }) {
   
   return loading ? (
   <div className="w-full h-[500px] flex justify-center items-center">
@@ -23,6 +23,7 @@ function ShowFriendsToBe({ users, loading }) {
           username={user.username}
           profilePic={user.profilePic}
           gender={user.gender}
+          refreshUsers={refreshUsers}
           className="transition transform hover:scale-105 duration-200"
         />
       ))}

@@ -49,7 +49,6 @@ function Sidebar() {
         if (response.status === 200) {
           const friends = response.data;
           setFriends(friends);
-          console.log(friends)
         }
       } catch (error) {
         console.error("Fetching friends failed, ", error);
