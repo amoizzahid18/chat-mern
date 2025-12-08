@@ -16,7 +16,14 @@ const convoSchema = new mongoose.Schema(
         default: [],
       },
     ],
-
+    isGroup: {
+      type: Boolean,
+      default: false,
+    },
+    groupName: {
+      type: String,
+      default: null,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

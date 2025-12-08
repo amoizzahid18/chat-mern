@@ -1,40 +1,43 @@
 import Message from "../models/msgModel.js";
 import Convo from "../models/convoModel.js";
 
-// Send a message
+// Send a message (1:1 or group)
 const sendMsg = async (req, res) => {
   try {
-    const { id: receiverId } = req.params;
-    const { message, isForwarded, isAReply, replyTo } = req.body;
+    const { convoId, message, isForwarded, isAReply, replyTo } = req.body;
     const senderId = req.user._id;
 
-    // Find existing conversation between the two users, ignoring order
-    let conversation = await Convo.findOne({
-      participants: { $all: [senderId, receiverId] },
-    });
-
-    // Create new conversation if it doesn't exist
-    if (!conversation) {
-      conversation = await Convo.create({
-        participants: [senderId, receiverId].sort(),
+    let conversation;
+    if (convoId) {
+      // Group or 1:1 convo already exists
+      conversation = await Convo.findById(convoId);
+      if (!conversation) return res.status(404).json({ message: "Conversation not found" });
+    } else {
+      // 1:1 convo: find or create
+      const { receiverId } = req.params;
+      conversation = await Convo.findOne({
+        participants: { $all: [senderId, receiverId] },
+        isGroup: false,
       });
+      if (!conversation) {
+        conversation = await Convo.create({
+          participants: [senderId, receiverId],
+          isGroup: false,
+        });
+      }
     }
 
-    // Create message with optional flags
     const newMessage = await Message.create({
       senderId,
-      receiverId,
       message,
-      isAReply: isAReply || false,
-      replyTo: isAReply && replyTo ? replyTo : null,
-      isForwarded: isForwarded || false,
+      isAReply,
+      replyTo,
+      isForwarded,
     });
 
-    // Push to conversation
     conversation.messages.push(newMessage._id);
-
-    // Save both
-    await Promise.all([newMessage.save(), conversation.save()]);
+    await newMessage.save();
+    await conversation.save();
 
     res.status(201).json(newMessage);
   } catch (error) {
@@ -46,23 +49,18 @@ const sendMsg = async (req, res) => {
 // Get all messages for a conversation
 const getMsgs = async (req, res) => {
   try {
-    const { id: otherUserId } = req.params;
-    const userId = req.user._id;
+    const { convoId } = req.params;
+    const conversation = await Convo.findById(convoId).populate("messages");
 
-    const conversation = await Convo.findOne({
-      participants: { $all: [userId, otherUserId] },
-    }).populate("messages");
-
-    if (!conversation) {
-      return res.status(200).json([]); // no messages yet
-    }
-
+    if (!conversation || conversation.isDeleted) return res.status(200).json([]);
+    
     res.status(200).json(conversation.messages);
   } catch (error) {
-    console.error("Error fetching messages:", error);
+    console.error("Error getting messages:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Delete a single message (soft delete)
 const delMsg = async (req, res) => {
