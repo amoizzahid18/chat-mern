@@ -14,9 +14,17 @@ export const SocketProvider = ({ children }) => {
     }
     return socketRef.current;
   };
+  const disconnectSocket = () => {
+    if (socketRef.current) {
+      socketRef.current.disconnect();
+      socketRef.current = null; // allow new socket on next login
+    }
+  };
+
     const value = {
     socket: socketRef.current,
     connectSocket,
+    disconnectSocket,
   };
   return (
     <SocketContext.Provider value={value}>

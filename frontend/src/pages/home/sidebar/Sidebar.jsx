@@ -6,7 +6,7 @@ import { useSocket } from "../../SocketContext";
 import { useAuth } from "../../AuthContext";
 
 function Sidebar() {
-  const { connectSocket } = useSocket();
+  const { disconnectSocket } = useSocket();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(false);
   const [filter, setFilter] = useState("");
@@ -28,8 +28,7 @@ function Sidebar() {
         });
         if (response.status === 200) {
           setLoading(false);
-          const sock = connectSocket();
-          sock.disconnect();
+          disconnectSocket();
         }
       } catch (error) {
         console.log("Logout failed", error.message);
@@ -38,7 +37,7 @@ function Sidebar() {
       }
     else setUser(null);
   };
-  
+
   const fetchFriends = async () => {
     if (user)
       try {
