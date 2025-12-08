@@ -3,12 +3,16 @@ import { useChatUI } from "../../../ChatUIContext";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
-  const { goHome, viewProfile } = useChatUI();
+  const { goHome, viewProfile, friendsDM, setFriendsDM } = useChatUI();
+  const { profilePic, fullname } = friendsDM;
   return (
     <>
       <div className="flex flex-row justify-start bg-transparent items-center">
         <button
-          onClick={goHome}
+          onClick={() => {
+            goHome();
+            setFriendsDM(null);
+          }}
           className="ml-4 hover:bg-white/10 p-2 hover:shadow-md cursor-pointer  rounded-full"
         >
           <svg
@@ -31,13 +35,21 @@ function ChatName() {
 
         <img
           className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
-          src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+          src={
+            profilePic
+              ? profilePic
+              : "https://img.daisyui.com/images/profile/demo/1@94.webp"
+          }
           onClick={viewProfile}
         />
         <div className="w-full h-full flex flex-row justify-between  pr-2">
           <div className="flex flex-col ml-4 justify-center items-start">
-            <div className="font-bold text-lg cursor-pointer"
-            onClick={viewProfile}>Dio Lupa</div>
+            <div
+              className="font-bold text-lg cursor-pointer"
+              onClick={viewProfile}
+            >
+              {fullname}
+            </div>
             <div className="text-xs opacity-70">Online</div>
           </div>
           <button className="btn btn-square bg-transparent shadow-none border-none hover:bg-white/10 text-white">

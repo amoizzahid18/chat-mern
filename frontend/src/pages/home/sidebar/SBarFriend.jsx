@@ -2,11 +2,14 @@ import React from "react";
 import { useChatUI } from "../../ChatUIContext.jsx";
 
 function SBarFriend({ profilePic, fullname, bio }) {
-  const { openDm } = useChatUI();
+  const { openDm, setFriendsDM } = useChatUI();
   return (
     <div
       className="flex h-16 hover:bg-white/30 duration-75 justify-start items-center"
-      onClick={openDm}
+      onClick={() => {
+        setFriendsDM({ profilePic: profilePic, fullname: fullname, bio: bio });
+        openDm();
+      }}
     >
       <div>
         <img className="size-8 rounded-4xl m-2" src={profilePic} />
