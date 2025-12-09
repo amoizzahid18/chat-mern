@@ -1,28 +1,31 @@
-import React from "react";
 import { useChatUI } from "../../ChatUIContext";
 import { useState } from "react";
-import { set } from "mongoose";
 import axios from "axios";
+import { useAuth } from "../../AuthContext";
+import { set } from "mongoose";
 
-// function WelcomeHome({setIsAddFriend}) {
+
 function WelcomeHome() {
   const { openAddFriend, viewProfile } = useChatUI();
+  const { setUser } = useAuth();  
   const [loading, setLoading] = useState(false);
   const deleteAccount = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
+      const response = await axios.delete(
         "http://localhost:5000/home/delete-account",
         {
           withCredentials: true,
         }
       );
       if (response.status === 200) {
+        console.log("Account deleted")
+        setUser(null);
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
-      console.error(error);
+      console.log(error.message);
     }
   };
   return (
@@ -60,22 +63,28 @@ function WelcomeHome() {
           className="dropdown-content  w-44 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl mt-12 flex flex-col gap-1 text-white"
         >
           <li
-            className="px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer"
+            className={`px-4 py-2 ${loading? "pointer-events-none":""} hover:bg-white/20 rounded-lg cursor-pointer`}
             onClick={viewProfile}
           >
             View Profile
           </li>
           <li
-            className="px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer"
+            className={`px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer ${loading? "pointer-events-none":""}`}
             onClick={openAddFriend}
           >
             Add Friend
           </li>
           <li
-            className="px-4 py-2 hover:bg-red-500/30 rounded-lg cursor-pointer"
+            className={`px-4 py-2 ${loading?"bg-red-500/30 pointer-events-none":""} hover:bg-red-500/30 rounded-lg cursor-pointer`}
             onClick={deleteAccount}
           >
-            Delete Account
+            {loading ? (
+              <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
+              <span className="loading loading-dots loading-sm text-white"></span>
+            </button>
+            
+            ) : ("Delete Account") }
+            
           </li>
         </ul>
       </div>

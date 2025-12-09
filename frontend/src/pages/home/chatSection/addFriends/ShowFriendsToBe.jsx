@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
 import FriendToBe from "./FriendToBe.jsx";
-import { useState } from "react";
-import { mockFriends } from "./mockFriends.js";
-function ShowFriendsToBe({ users, refreshUsers, loading }) {
-  
+
+function ShowFriendsToBe({ users, loading }) {  
   return loading ? (
   <div className="w-full h-[500px] flex justify-center items-center">
     <span className="loading loading-dots loading-xl text-purple-300"></span>
@@ -23,7 +20,6 @@ function ShowFriendsToBe({ users, refreshUsers, loading }) {
           username={user.username}
           profilePic={user.profilePic}
           gender={user.gender}
-          refreshUsers={refreshUsers}
           className="transition transform hover:scale-105 duration-200"
         />
       ))}

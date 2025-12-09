@@ -25,11 +25,10 @@ export const getAllUsersForFriendReq = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const users = await User.find({
-      _id: { $nin: [userId, ...currentUser.friends] }
+      _id: { $nin: [userId, ...currentUser.friends] },
     }).select("-password");
 
     res.status(200).json(users);
-
   } catch (error) {
     console.error("Error fetching users for friend request:", error);
     res.status(500).json({ message: error.message });
@@ -39,15 +38,16 @@ export const getAllUsersForFriendReq = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await User.findByIdAndDelete(userId);
-
+    const user = await User.findById(userId);
     if (!user) {
       return res
         .status(404)
         .json({ message: "User not found or incorrect id" });
     }
-    res.clearCookie("token");
-    res.status(200).json({ message: "Account deleted successfully" });
+    await user.deleteOne().then(() => {
+      res.clearCookie("token");
+      res.status(200).json({ message: "Account deleted successfully" });
+    });
   } catch (error) {
     console.error("Error during account deletion:", error);
     res.status(500).json({ message: error.message });
@@ -86,8 +86,9 @@ export const addFriend = async (req, res) => {
 export const removeFriend = async (req, res) => {
   try {
     const { id } = req.params;
-    const sender = req.user._id;
+    const senderId = req.user._id;
     const user = await User.findById(id);
+    const sender = await User.findById(senderId);    
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -97,7 +98,13 @@ export const removeFriend = async (req, res) => {
     if (!sender.friends.includes(id)) {
       return res.status(400).json({ message: "User is not a friend" });
     }
-    sender.friends = sender.friends.filter((friend) => friend !== id);
+    sender.friends = sender.friends.filter(
+      (friend) => friend.toString() !== id
+    );
+    user.friends = user.friends.filter(
+      (friend) => friend.toString() !== senderId.toString()
+    );
+    await user.save();
     await sender.save();
     return res.status(201).json({ message: "Friend removed successfully" });
   } catch (error) {

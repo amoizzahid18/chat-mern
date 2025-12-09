@@ -7,6 +7,7 @@ export const ChatUIProvider = ({ children }) => {
   const [isAddFriend, setIsAddFriend] = useState(false);
   const [isViewProfile, setIsViewProfile] = useState(false);
   const [friendsDM, setFriendsDM] = useState(null);
+  const [refreshUsers, setRefreshUsers] = useState(false)
 
   const openDm = () => {
     setIsDm(true);
@@ -35,11 +36,13 @@ export const ChatUIProvider = ({ children }) => {
         isAddFriend,
         isViewProfile,
         friendsDM,
+        refreshUsers,
         openDm,
         openAddFriend,
         goHome,
         viewProfile,
         setFriendsDM,
+        setRefreshUsers,
       }}
     >
       {children}

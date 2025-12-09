@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-function FriendToBe({ id, fullname, username, profilePic, gender, refreshUsers }) {
+import { useChatUI } from "../../../ChatUIContext";
+function FriendToBe({ id, fullname, username, profilePic, gender }) {
   const [loading, setLoading] = useState(false);
+  const { setRefreshUsers } = useChatUI();
   const addFriend = async () => {
     try {
       setLoading(true);
@@ -12,8 +14,8 @@ function FriendToBe({ id, fullname, username, profilePic, gender, refreshUsers }
           withCredentials: true,
         }
       );
-      if (response.status === 200) {
-        refreshUsers();
+      if (response.status === 201) {
+        setRefreshUsers(true);
       }
     } catch (error) {
       console.log(error.message);

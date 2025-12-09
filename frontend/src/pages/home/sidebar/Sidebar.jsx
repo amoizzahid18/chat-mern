@@ -4,11 +4,13 @@ import SidebarFriends from "./SidebarFriends";
 import SearchBar from "../SearchBar";
 import { useSocket } from "../../SocketContext";
 import { useAuth } from "../../AuthContext";
+import { useChatUI } from "../../ChatUIContext";
 
 function Sidebar() {
   const { disconnectSocket } = useSocket();
+  const { refreshUsers } = useChatUI();
   const [friends, setFriends] = useState([]);
-  const [loadingF, setLoadingF] = useState(false);
+  const [loadingF, setLoadingF] = useState(true);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useAuth();
@@ -57,7 +59,7 @@ function Sidebar() {
   };
   useEffect(() => {
     fetchFriends();
-  }, []);
+  }, [refreshUsers]);
   return (
     <div
       className="flex flex-col w-1/4 px-4 py-5 rounded-2xl h-full 
@@ -71,7 +73,17 @@ function Sidebar() {
 
       {/* Friends List */}
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
-        <SidebarFriends friends={filteredFriends} loading={loadingF} />
+        {loadingF ? (
+          <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-120 rounded-box">
+            <div className="max-h-[490px]   overflow-y-scroll text-center">
+              <div className="min-h-96 flex items-center justify-center">
+                <span class="loading loading-dots loading-lg"></span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <SidebarFriends friends={filteredFriends} loading={loadingF} />
+        )}
       </div>
 
       {/* Logout Button */}

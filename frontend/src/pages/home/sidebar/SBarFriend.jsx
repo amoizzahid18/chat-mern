@@ -1,13 +1,19 @@
-import React from "react";
 import { useChatUI } from "../../ChatUIContext.jsx";
 
-function SBarFriend({ profilePic, fullname, bio }) {
+function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
   const { openDm, setFriendsDM } = useChatUI();
   return (
     <div
-      className="flex h-16 hover:bg-white/30 duration-75 justify-start items-center"
+      className="flex h-16 hover:bg-white/30 cursor-default duration-75 justify-start items-center"
       onClick={() => {
-        setFriendsDM({ profilePic: profilePic, fullname: fullname, bio: bio });
+        setFriendsDM({
+          id: id,
+          profilePic: profilePic,
+          fullname: fullname,
+          username: username,
+          bio: bio,
+          email: email,
+        });
         openDm();
       }}
     >
