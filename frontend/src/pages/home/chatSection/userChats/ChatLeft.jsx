@@ -1,7 +1,16 @@
 import React from "react";
 import { useState } from "react";
 
-function ChatLeft() {
+function ChatLeft({
+  id,
+  message,
+  isAReply,
+  isDeleted,
+  isForwarded,
+  isEdited,
+  replyTo,
+  timestamp,
+}) {
   const messageOptions = (
     <button className="dropdown dropdown-end btn shadow-none z-2  bg-transparent h-4 w-2 border-none ">
       <div tabIndex={0} role="button" className="">
@@ -114,11 +123,9 @@ function ChatLeft() {
             {messageOptions}
           </div>
 
-          <span className="mr-3">
-            Put me on the Council and not make me a Master!??
-          </span>
+          <span className="mr-3">{message}</span>
           <span className="flex justify-end mr-3">
-            <time className="text-xs opacity-50">00:00 am</time>
+            <time className="text-xs opacity-50">{timestamp}</time>
           </span>
         </div>
       </div>

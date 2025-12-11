@@ -1,13 +1,16 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useSocket } from "./SocketContext";
+import { useChatUI } from "./ChatUIContext";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { disconnectSocket } = useSocket();
+  const {goHome ,setFriendsDM} = useChatUI();
   const validateUser = async () => {
-    if (!user)
       try {
         const response = await axios.get(
           "http://localhost:5000/auth/validate",
@@ -19,6 +22,10 @@ export const AuthProvider = ({ children }) => {
           setUser(response.data.user);
       } catch (error) {
         console.log(error.message);
+        disconnectSocket();
+        setUser(null);
+        setFriendsDM(null);
+        goHome();
       } finally {
         setLoading(false);
       }
@@ -27,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     validateUser();
   }, [user]);
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, validateUser }}>
       {children}
     </AuthContext.Provider>
   );

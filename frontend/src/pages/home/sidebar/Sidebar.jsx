@@ -14,7 +14,7 @@ function Sidebar() {
   const [loadingF, setLoadingF] = useState(true);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user, setUser } = useAuth();
+  const { user, setUser, validateUser } = useAuth();
   const navigate = useNavigate();
 
   const filteredFriends = useMemo(() => {
@@ -24,26 +24,23 @@ function Sidebar() {
   }, [filter, friends]);
 
   const logoutUser = async () => {
-    if (user)
-      try {
-        setLoading(true);
-        const response = await axios.get("http://localhost:5000/auth/logout", {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          disconnectSocket();
-          setFriendsDM(null);
-          goHome();
-          setUser(null);
-        }
-      } catch (error) {
-        console.log("Logout failed", error.message);
-      } finally {
-        setLoading(false);
+    if (user) 
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:5000/auth/logout", {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        disconnectSocket();
+        setFriendsDM(null);
+        goHome();
+        setUser(null);
       }
-    else {
-      navigate("/login");
-    };
+    } catch (error) {
+      console.log("Logout failed", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchFriends = async () => {
@@ -62,6 +59,10 @@ function Sidebar() {
       } finally {
         setLoadingF(false);
       }
+    else {
+      setUser(null);
+      navigate("/login");
+    }
   };
   useEffect(() => {
     fetchFriends();

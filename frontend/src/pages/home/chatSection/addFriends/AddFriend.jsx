@@ -3,13 +3,17 @@ import SearchBar from "../../SearchBar";
 import ShowFriendsToBe from "./ShowFriendsToBe";
 import axios from "axios";
 import { useChatUI } from "../../../ChatUIContext";
+import { useAuth } from "../../../AuthContext";
 
 function AddFriend() {
   const { goHome, refreshUsers } = useChatUI();
+  const {user, setUser, validateUser} = useAuth();
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+ 
   const fetchUsers = async () => {
+    if (user) 
     try {
       setLoading(true);
       const response = await axios.get("http://localhost:5000/home/all-users", {
@@ -23,6 +27,10 @@ function AddFriend() {
     } catch (error) {
       setLoading(false);
       console.error(error);
+    }
+    else{
+      setUser(null);
+      navigate('/login');
     }
   };
 

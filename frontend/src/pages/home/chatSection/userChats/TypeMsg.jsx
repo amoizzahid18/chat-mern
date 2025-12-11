@@ -1,9 +1,10 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import { useAuth } from "../../../AuthContext";
 import { useChatUI } from "../../../ChatUIContext";
 import axios from "axios";
-function TypeMsg() {
-  const { user } = useAuth();
+function TypeMsg({setRefreshMessages}) {
+  const { user, validateUser } = useAuth();
   const { friendsDM } = useChatUI();
   const { id } = friendsDM;
   const [message, setMessage] = useState("");
@@ -13,6 +14,7 @@ function TypeMsg() {
     setMessage(e.target.value);
   };
   const sendMessage = async (e) => {
+    if(!message.trim()) return;
     if (user)
       try {
         setLoading(true);
@@ -24,12 +26,17 @@ function TypeMsg() {
         );
         if (response.status === 201) {
           console.log(response.data);
+          setRefreshMessages(true);
+          setMessage("");
         }
       } catch (error) {
         console.log(error.message);
       } finally {
         setLoading(false);
       }
+      if(!user){
+        useNavigate('/login');
+        }
   };
   return (
     <div className="flex items-center gap-3 mx-4 my-4">

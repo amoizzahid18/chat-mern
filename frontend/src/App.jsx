@@ -18,7 +18,7 @@ function PublicRoute({ user, children }) {
   if (user) return <Navigate to="/home" replace />;
   return children;
 }
-function Loader() {
+export function Loader() {
   return (
     <div
       className="w-full min-h-screen flex flex-col justify-center items-center gap-6

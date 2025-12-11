@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSocket } from "../SocketContext";
 import { useAuth } from "../AuthContext";
+import { useChatUI } from "../ChatUIContext";
 
 function Login() {
   const { connectSocket } = useSocket();
   const { user, setUser } = useAuth();
-
+  const { goHome } = useChatUI();
   const eyeOpen = (
     <svg
       className="h-[1.5em] opacity-50 cursor-pointer"
@@ -119,6 +120,7 @@ function Login() {
           const sock = connectSocket();
           sock.emit("hello", { message: "User logged in", id: sock.id });
           setUser(response.data);
+          goHome();
         }
       } catch (error) {
         setLoading(false);

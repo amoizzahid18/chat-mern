@@ -1,9 +1,50 @@
 import React from "react";
 import { useState } from "react";
+import { useAuth } from "../../../AuthContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function ChatRight() {
+function ChatRight({
+  id,
+  message,
+  isAReply,
+  isDeleted,
+  isForwarded,
+  isEdited,
+  replyTo,
+  timestamp,
+  setRefreshMessages,
+}) {
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user, setUser } = useAuth();
+  const delMessage = async () => {
+    if (!user) {
+      setUser(null);
+      useNavigate("/login");
+    }
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        `http://localhost:5000/messages/dms/message/delete/${id}`,
+        null,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        console.log("Message deleted");
+        setRefreshMessages(true);
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const messageOptions = (
-    <button className="dropdown dropdown-end btn z-2 shadow-none bg-transparent  h-4 w-2 border-none ">
+    <button className={`dropdown ${isDeleted ? "opacity-0 pointer-events-none:": ""} dropdown-end btn z-2 shadow-none bg-transparent  h-4 w-2 border-none `}>
       <div tabIndex={0} role="button" className="bg-transparent">
         <svg
           className="h-[1em] opacity-50"
@@ -13,7 +54,7 @@ function ChatRight() {
           strokeWidth="1.5"
           stroke="currentColor"
           class="size-4"
-          color='white'
+          color="white"
         >
           <g
             strokeLinejoin="round"
@@ -32,7 +73,9 @@ function ChatRight() {
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content translate-y-14 menu bg-white/90 rounded-box z-10 w-36 p-2 shadow-sm"
+        className={`dropdown-content translate-y-14 menu bg-white/70 rounded-box z-10 w-36 p-2 shadow-sm ${
+          loading ? "pointer-events-none" : ""
+        }`}
       >
         <li>
           <div>
@@ -78,13 +121,13 @@ function ChatRight() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="2.0"
+              strokeWidth="2.0"
               stroke="currentColor"
               class="size-4"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
               />
             </svg>
@@ -97,13 +140,13 @@ function ChatRight() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="2.0"
+              strokeWidth="2.0"
               stroke="currentColor"
               class="size-4"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="m16.49 12 3.75-3.751m0 0-3.75-3.75m3.75 3.75H3.74V19.5"
               />
             </svg>
@@ -112,52 +155,58 @@ function ChatRight() {
           </div>
         </li>
         <li>
-          <div className="hover:bg-red-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.0"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-              />
-            </svg>
-
-            <a>Delete</a>
+          <div
+            className={`hover:bg-red-300 ${
+              loading ? "bg-red-500 pointer-events-none" : ""
+            }`}
+            onClick={delMessage}
+          >
+            {loading ? (
+              <span className="loading loading-dots loading-sm text-white"></span>
+            ) : (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2.0"
+                  stroke="currentColor"
+                  class="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
+                <a>Delete</a>
+              </>
+            )}
           </div>
         </li>
       </ul>
     </button>
   );
 
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <div className="px-6">
       <div className="chat chat-end ">
         <div
-          className="chat-bubble py-0 bg-white/10 text-white pr-0 text-wrap "
+          className={`chat-bubble py-0 bg-white/10 ${isDeleted ? "opacity-75": ""} text-white pr-0 text-wrap `}
           onMouseEnter={() => setShowModal(true)}
           onMouseLeave={() => setShowModal(false)}
         >
           <div
-            className={`w-full flex justify-end  ${
+            className={` w-full flex justify-end  ${
               showModal ? "" : "opacity-0"
             }`}
           >
             {messageOptions}
           </div>
 
-          <span className="mr-3">
-            Put me on the Council and not make me a Master!??
-          </span>
+          <span className="mr-3">{message}</span>
           <span className="flex justify-end mr-3">
-            <time className="text-xs opacity-50">00:00 am</time>
+            <time className="text-xs opacity-50">{timestamp}</time>
           </span>
         </div>
       </div>
