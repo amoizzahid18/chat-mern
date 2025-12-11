@@ -9,6 +9,7 @@ export const SocketProvider = ({ children }) => {
     if (!socketRef.current) {
       socketRef.current = io("http://localhost:4500", {
         withCredentials: true,
+        reconnection: true,
         autoConnect: true,
       });
     }

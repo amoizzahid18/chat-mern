@@ -28,6 +28,7 @@ function SearchBar({ value = "", onChange = () => {} }) {
             strokeWidth="2.5"
             fill="none"
             stroke="currentColor"
+            color="White"
           >
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>

@@ -5,15 +5,17 @@ import SearchBar from "../SearchBar";
 import { useSocket } from "../../SocketContext";
 import { useAuth } from "../../AuthContext";
 import { useChatUI } from "../../ChatUIContext";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const { disconnectSocket } = useSocket();
-  const { refreshUsers } = useChatUI();
+  const { refreshUsers, goHome, setFriendsDM } = useChatUI();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(true);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
   const filteredFriends = useMemo(() => {
     const q = filter.trim().toLowerCase();
@@ -29,15 +31,19 @@ function Sidebar() {
           withCredentials: true,
         });
         if (response.status === 200) {
-          setLoading(false);
           disconnectSocket();
+          setFriendsDM(null);
+          goHome();
+          setUser(null);
         }
       } catch (error) {
         console.log("Logout failed", error.message);
       } finally {
-        setUser(null);
+        setLoading(false);
       }
-    else setUser(null);
+    else {
+      navigate("/login");
+    };
   };
 
   const fetchFriends = async () => {
