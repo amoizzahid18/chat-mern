@@ -12,7 +12,7 @@ dotenv.config({ debug: false }); // it will not log the config loading process o
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-import { connectDB } from "./database/connectDB.js";
+import { connectDB } from "./util/connectDB.js";
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -28,6 +28,7 @@ app.use("/auth", authRoutes);
 app.use("/messages", msgRoutes);
 app.use("/home", userRoutes);
 
+const socketUserMap = new Map();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -40,8 +41,23 @@ io.on("connection", (socket) => {
   socket.on("hello", (data) => {
     console.log(data);
   });
-  socket.on("disconnect", () => {
-    console.log("User disconnect: ", socket.id);
+  socket.on("register", (userId) => {
+    socket.userId = userId;
+    socketUserMap.set(userId, socket.id);
+    console.log(`User ${userId} registered with socket ${socket.id}`);
+  });
+  socket.on("logout", () => {
+    // Remove user mapping for this socket
+    if (socket.userId) {
+      socketUserMap.delete(userId);
+      console.log("User logged out:", socket.id);
+    }
+  });
+  socket.on("disconnect", (userId) => {
+    if (socket.userId) {
+      socketUserMap.delete(userId);
+      console.log("User disconnect: ", socket.id);
+    }
   });
 });
 

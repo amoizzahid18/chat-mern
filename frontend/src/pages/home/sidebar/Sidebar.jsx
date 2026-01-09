@@ -8,7 +8,7 @@ import { useChatUI } from "../../ChatUIContext";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
-  const { disconnectSocket } = useSocket();
+  const socket = useSocket();
   const { refreshUsers, goHome, setFriendsDM } = useChatUI();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(true);
@@ -31,7 +31,7 @@ function Sidebar() {
         withCredentials: true,
       });
       if (response.status === 200) {
-        disconnectSocket();
+        socket?.emit("logout");
         setFriendsDM(null);
         goHome();
         setUser(null);

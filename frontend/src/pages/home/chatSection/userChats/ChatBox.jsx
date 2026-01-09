@@ -14,7 +14,7 @@ function ChatBox() {
   const { id } = friendsDM;
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
-
+  const [msgToEdit, setMsgToEdit] = useState(null);
   const getMessages = async () => {
     if (!user) {
       setUser(null);
@@ -65,7 +65,7 @@ function ChatBox() {
 
   useEffect(() => {
     getMessages();
-  }, [refreshMessages]);
+  }, [refreshMessages === true]);
   return (
     <div className="flex flex-col justify-around  bg-transparent">
       <div
@@ -90,6 +90,7 @@ function ChatBox() {
                   replyTo={message.replyTo}
                   timestamp={formatChatTimestamp(message.updatedAt)}
                   setRefreshMessages={setRefreshMessages}
+                  setMsgToEdit={setMsgToEdit}
                 />
               );
             } else {
@@ -115,7 +116,7 @@ function ChatBox() {
           </p>
         )}
       </div>
-      <TypeMsg setRefreshMessages={setRefreshMessages} />
+      <TypeMsg msgToEdit={msgToEdit} setRefreshMessages={setRefreshMessages} />
     </div>
   );
 }

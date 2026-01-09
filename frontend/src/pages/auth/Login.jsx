@@ -6,7 +6,7 @@ import { useAuth } from "../AuthContext";
 import { useChatUI } from "../ChatUIContext";
 
 function Login() {
-  const { connectSocket } = useSocket();
+  // const { connectSocket } = useSocket();
   const { user, setUser } = useAuth();
   const { goHome } = useChatUI();
   const eyeOpen = (
@@ -117,8 +117,8 @@ function Login() {
         );
         if (response.status === 200) {
           setLoading(false);
-          const sock = connectSocket();
-          sock.emit("hello", { message: "User logged in", id: sock.id });
+          // const sock = connectSocket();
+          // sock.emit("hello", { message: "User logged in", id: sock.id });
           setUser(response.data);
           goHome();
         }

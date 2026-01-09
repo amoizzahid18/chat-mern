@@ -1,9 +1,9 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import { useChatUI } from "../../../ChatUIContext";
 import axios from "axios";
-function TypeMsg({setRefreshMessages}) {
+function TypeMsg({ msgToEdit, setRefreshMessages }) {
   const { user, validateUser } = useAuth();
   const { friendsDM } = useChatUI();
   const { id } = friendsDM;
@@ -13,8 +13,8 @@ function TypeMsg({setRefreshMessages}) {
     e.preventDefault();
     setMessage(e.target.value);
   };
-  const sendMessage = async (e) => {
-    if(!message.trim()) return;
+  const sendMessage = async () => {
+    if (!message.trim()) return;
     if (user)
       try {
         setLoading(true);
@@ -34,9 +34,34 @@ function TypeMsg({setRefreshMessages}) {
       } finally {
         setLoading(false);
       }
-      if(!user){
-        useNavigate('/login');
+    if (!user) {
+      useNavigate("/login");
+    }
+  };
+  const editMsg = async () => {
+    if (!user) {
+      setUser(null);
+      useNavigate("/login");
+    }
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        `http://localhost:5000/messages/dms/message/edit/${msgToEdit.id}`,
+        {message: message},
+        {
+          withCredentials: true,
         }
+      );
+      if (response.status === 200) {
+        console.log(response.data);
+        setRefreshMessages(true);
+        setMessage("");
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="flex items-center gap-3 mx-4 my-4">
@@ -49,12 +74,12 @@ function TypeMsg({setRefreshMessages}) {
         <input
           type="text"
           placeholder="Type a message..."
-          value={message}
+          value={msgToEdit ? msgToEdit.message : message}
           onChange={handleChange}
           className="w-full bg-transparent text-white placeholder-white/70 outline-none"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              sendMessage();
+              msgToEdit ? editMsg() : sendMessage();
             }
           }}
         />

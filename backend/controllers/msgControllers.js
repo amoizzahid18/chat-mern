@@ -5,20 +5,20 @@ import Convo from "../models/convoModel.js";
 const sendMsg = async (req, res) => {
   try {
     const { message, isForwarded, isAReply, replyTo } = req.body;
-    const { convoOrReceiverId } = req.params;
+    const { id } = req.params;
     const senderId = req.user._id;
     let conversation;
-    if (convoOrReceiverId) {
+    if (id) {
       // Group or 1:1 convo already exists
-      conversation = await Convo.findById(convoOrReceiverId);
+      conversation = await Convo.findById(id);
       // 1:1 convo: find or create
       if (!conversation) {
         conversation = await Convo.findOne({
-          participants: { $all: [senderId, convoOrReceiverId].sort() },
+          participants: { $all: [senderId, id].sort() },
         });
         if (!conversation) {
           conversation = await Convo.create({
-            participants: [senderId, convoOrReceiverId].sort(),
+            participants: [senderId, id].sort(),
             isGroup: false,
           });
         }
@@ -27,7 +27,7 @@ const sendMsg = async (req, res) => {
 
     const newMessage = await Message.create({
       senderId: senderId,
-      receiverId: convoOrReceiverId,
+      receiverId: id,
       message: message,
       isAReply: isAReply,
       replyTo: replyTo,
@@ -38,7 +38,7 @@ const sendMsg = async (req, res) => {
     await newMessage.save();
     await conversation.save();
 
-    res.status(201).json(newMessage);
+    res.status(201).json({ message: newMessage });
   } catch (error) {
     console.error("Error sending message:", error);
     res.status(500).json({ message: error.message });
@@ -48,13 +48,20 @@ const sendMsg = async (req, res) => {
 // Get all messages for a conversation
 const getMsgs = async (req, res) => {
   try {
-    const { convoOrReceiverId } = req.params;
-    const conversation = await Convo.findById(convoOrReceiverId).populate(
-      "messages"
-    );
+    const { id } = req.params;
+    const senderId = req.user._id;
+    const conversation = await Convo.findById(id).populate("messages");
 
-    if (!conversation || conversation.isDeleted)
-      return res.status(200).json([]);
+    if (!conversation) {
+      const dm = await Convo.findOne({
+        participants: { $all: [senderId, id].sort() },
+      }).populate("messages");
+      if (!dm) {
+        return res.status(404).json({ message: "Conversation not found" });
+      } else {
+        return res.status(200).json(dm.messages);
+      }
+    }
 
     res.status(200).json(conversation.messages);
   } catch (error) {
@@ -66,8 +73,8 @@ const getMsgs = async (req, res) => {
 // Delete a single message (soft delete)
 const delMsg = async (req, res) => {
   try {
-    const { id: messageId } = req.params;
-    const msg = await Message.findById(messageId);
+    const { id: id } = req.params;
+    const msg = await Message.findById(id);
 
     if (!msg) {
       return res.status(404).json({ message: "Message not found" });
@@ -87,8 +94,8 @@ const delMsg = async (req, res) => {
 // Edit a single message
 const editMsg = async (req, res) => {
   try {
-    const { id: messageId } = req.params;
-    const msg = await Message.findById(messageId);
+    const { id } = req.params;
+    const msg = await Message.findById(id);
 
     if (!msg) {
       return res.status(404).json({ message: "Message not found" });

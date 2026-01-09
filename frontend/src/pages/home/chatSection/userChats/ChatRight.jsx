@@ -14,6 +14,7 @@ function ChatRight({
   replyTo,
   timestamp,
   setRefreshMessages,
+  setMsgToEdit,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,8 @@ function ChatRight({
       setLoading(false);
     }
   };
+
+  
 
   const messageOptions = (
     <button className={`dropdown ${isDeleted ? "opacity-0 pointer-events-none:": ""} dropdown-end btn z-2 shadow-none bg-transparent  h-4 w-2 border-none `}>
@@ -96,7 +99,7 @@ function ChatRight({
             <a>Reply</a>
           </div>
         </li>
-        <li>
+        <li onClick={() => setMsgToEdit({id: id, message: message})}>
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
