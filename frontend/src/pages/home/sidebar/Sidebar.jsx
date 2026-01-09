@@ -8,13 +8,13 @@ import { useChatUI } from "../../ChatUIContext";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
-  const socket = useSocket();
+  const socketValue = useSocket();
   const { refreshUsers, goHome, setFriendsDM } = useChatUI();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(true);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user, setUser, validateUser } = useAuth();
+  const { user, setUser, logout } = useAuth();
   const navigate = useNavigate();
 
   const filteredFriends = useMemo(() => {
@@ -24,22 +24,11 @@ function Sidebar() {
   }, [filter, friends]);
 
   const logoutUser = async () => {
-    if (user) 
-    try {
+    if (user) {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/auth/logout", {
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        socket?.emit("logout");
-        setFriendsDM(null);
-        goHome();
-        setUser(null);
-      }
-    } catch (error) {
-      console.log("Logout failed", error.message);
-    } finally {
+      await logout(); // Uses the logout from AuthContext
       setLoading(false);
+      navigate("/login"); // Redirect to login page
     }
   };
 

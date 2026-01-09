@@ -1,53 +1,93 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import { useChatUI } from "../../../ChatUIContext";
+import { useSocket } from "../../../SocketContext";
 import axios from "axios";
-function TypeMsg({ msgToEdit, setRefreshMessages }) {
-  const { user, validateUser } = useAuth();
+
+function TypeMsg({ msgToEdit, setRefreshMessages, conversationId, onMessageSent }) {
+  const { user } = useAuth();
   const { friendsDM } = useChatUI();
+  const socketValue = useSocket();
   const { id } = friendsDM;
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const navigate = useNavigate();
+
+  // Handle typing indicator
+  useEffect(() => {
+    if (!message.trim() && isTyping) {
+      setIsTyping(false);
+      socketValue?.sendTyping(id, false);
+    } else if (message.trim() && !isTyping) {
+      setIsTyping(true);
+      socketValue?.sendTyping(id, true);
+    }
+  }, [message, id, socketValue, isTyping]);
+
   const handleChange = (e) => {
     e.preventDefault();
     setMessage(e.target.value);
   };
+
   const sendMessage = async () => {
     if (!message.trim()) return;
-    if (user)
-      try {
-        setLoading(true);
-        console.log(id);
-        const response = await axios.post(
-          `http://localhost:5000/messages/dms/send/${id}`,
-          { message: message },
-          { withCredentials: true }
-        );
-        if (response.status === 201) {
-          console.log(response.data);
-          setRefreshMessages(true);
-          setMessage("");
-        }
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setLoading(false);
-      }
     if (!user) {
-      useNavigate("/login");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setIsTyping(false);
+      socketValue?.sendTyping(id, false); // Stop typing indicator
+
+      // Create message object to display immediately
+      const newMessage = {
+        _id: `temp-${Date.now()}`, // Temporary ID until server confirms
+        senderId: user._id,
+        message: message,
+        conversationId: conversationId,
+        isAReply: false,
+        isForwarded: false,
+        isEdited: false,
+        isDeleted: false,
+        createdAt: new Date(),
+      };
+
+      // Add message to UI immediately
+      if (onMessageSent) {
+        onMessageSent(newMessage);
+      }
+
+      // Send message via socket
+      socketValue?.sendMessage({
+        recipientId: id,
+        message: message,
+        conversationId: conversationId,
+        senderId: user._id,
+        createdAt: new Date(),
+      });
+
+      setMessage("");
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   const editMsg = async () => {
     if (!user) {
-      setUser(null);
-      useNavigate("/login");
+      navigate("/login");
+      return;
     }
     try {
       setLoading(true);
       const response = await axios.put(
         `http://localhost:5000/messages/dms/message/edit/${msgToEdit.id}`,
-        {message: message},
+        { message: message },
         {
           withCredentials: true,
         }
@@ -63,6 +103,7 @@ function TypeMsg({ msgToEdit, setRefreshMessages }) {
       setLoading(false);
     }
   };
+
   return (
     <div className="flex items-center gap-3 mx-4 my-4">
       {/* Message Input */}

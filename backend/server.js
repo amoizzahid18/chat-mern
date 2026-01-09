@@ -38,43 +38,123 @@ const io = new Server(httpServer, {
 });
 io.on("connection", (socket) => {
   console.log("New Client connected: ", socket.id);
-  socket.on("hello", (data) => {
-    console.log(data);
-  });
+  
   socket.on("register", (userId) => {
     socket.userId = userId;
     socketUserMap.set(userId, socket.id);
     console.log(`User ${userId} registered with socket ${socket.id}`);
+    // Notify all connected clients that user is online
+    io.emit("userOnline", { userId, socketId: socket.id });
   });
+
+  socket.on("sendMessage", async (data) => {
+    const { recipientId, message, conversationId, senderId } = data;
+    const recipientSocketId = socketUserMap.get(recipientId);
+    
+    console.log(`Message from ${senderId} to ${recipientId}:`, message);
+    
+    try {
+      // Save message to database
+      const Message = (await import("./models/msgModel.js")).default;
+      const Convo = (await import("./models/convoModel.js")).default;
+      
+      let conversation = await Convo.findById(conversationId);
+      
+      if (!conversation) {
+        conversation = await Convo.findOne({
+          participants: { $all: [senderId, recipientId].sort() },
+        });
+        if (!conversation) {
+          conversation = await Convo.create({
+            participants: [senderId, recipientId].sort(),
+            isGroup: false,
+          });
+        }
+      }
+      
+      const newMessage = await Message.create({
+        senderId: senderId,
+        receiverId: recipientId,
+        message: message,
+        isAReply: false,
+        isForwarded: false,
+      });
+      
+      conversation.messages.push(newMessage._id);
+      await conversation.save();
+      
+      // Send message to recipient if they're online
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit("receiveMessage", {
+          _id: newMessage._id,
+          senderId: senderId,
+          message: message,
+          conversationId: conversationId,
+          timestamp: newMessage.createdAt,
+          isAReply: false,
+          isForwarded: false,
+          isEdited: false,
+          isDeleted: false,
+        });
+      }
+      
+      // Send acknowledgment to sender
+      socket.emit("messageSent", { 
+        conversationId, 
+        success: true,
+        timestamp: newMessage.createdAt 
+      });
+    } catch (error) {
+      console.error("Error saving message:", error);
+      socket.emit("messageSent", { 
+        conversationId, 
+        success: false,
+        error: error.message
+      });
+    }
+  });
+
+  socket.on("typing", (data) => {
+    const { recipientId, isTyping } = data;
+    const recipientSocketId = socketUserMap.get(recipientId);
+    
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("userTyping", {
+        userId: socket.userId,
+        isTyping: isTyping,
+      });
+    }
+  });
+
   socket.on("logout", () => {
     // Remove user mapping for this socket
     if (socket.userId) {
-      socketUserMap.delete(userId);
-      console.log("User logged out:", socket.id);
+      socketUserMap.delete(socket.userId);
+      console.log("User logged out:", socket.userId);
+      io.emit("userOffline", { userId: socket.userId });
     }
   });
-  socket.on("disconnect", (userId) => {
+
+  socket.on("disconnect", () => {
     if (socket.userId) {
-      socketUserMap.delete(userId);
-      console.log("User disconnect: ", socket.id);
+      socketUserMap.delete(socket.userId);
+      console.log("User disconnect: ", socket.userId);
+      io.emit("userOffline", { userId: socket.userId });
     }
   });
 });
 
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
+      console.log(`Socket.io is running on http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
     console.error("Failed to connect to the database:", error);
-  })
-  .then(() =>
-    httpServer.listen(4500, () =>
-      console.log("Socket Server running on port 4500")
-    )
-  );
+    process.exit(1);
+  });
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

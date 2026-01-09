@@ -6,7 +6,7 @@ import { useChatUI } from "./ChatUIContext";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const socket = useSocket(); // ✅ socket instance (Model 1)
+  const socketValue = useSocket();
   const { goHome, setFriendsDM } = useChatUI();
 
   const [user, setUser] = useState(null);
@@ -39,15 +39,35 @@ export const AuthProvider = ({ children }) => {
     validateUser();
   }, []);
 
-  // 🔑 Register authenticated user with existing socket
+  // 🔑 Register authenticated user with socket
   useEffect(() => {
-    if (socket && user) {
-      socket.emit("register", user.id);
+    if (socketValue && user) {
+      socketValue.registerUser(user._id);
+      console.log("User registered with socket:", user._id);
     }
-  }, [socket, user]);
+  }, [user]);
+
+  // 🔌 Logout handler
+  const logout = async () => {
+    try {
+      await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Logout error:", error.message);
+    } finally {
+      // Clear state regardless of API call success
+      if (socketValue) {
+        socketValue.logout();
+      }
+      
+      setUser(null);
+      setFriendsDM(null);
+      goHome();
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, validateUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading, validateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

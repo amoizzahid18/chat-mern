@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useChatUI } from "../../../ChatUIContext";
+import { useSocket } from "../../../SocketContext";
 import { useState } from "react";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
   const { goHome, viewProfile, friendsDM, setFriendsDM, setRefreshUsers } = useChatUI();
+  const socketValue = useSocket();
   const { id, profilePic, fullname } = friendsDM;
   const [loading, setLoading] = useState(false);
+
+  const isOnline = socketValue?.onlineUsers?.has(id);
+  const isUserTyping = socketValue?.typingUsers?.has(id);
   
   const removeFriend = async () => {
     if (id && friendsDM)
@@ -58,7 +63,7 @@ function ChatName() {
           </svg>
         </button>
 
-        <img
+        {/* <img
           className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
           src={
             profilePic
@@ -66,7 +71,21 @@ function ChatName() {
               : "https://img.daisyui.com/images/profile/demo/1@94.webp"
           }
           onClick={viewProfile}
-        />
+        /> */}
+        <div className="relative">
+          <img
+            className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
+            src={
+              profilePic
+                ? profilePic
+                : "https://img.daisyui.com/images/profile/demo/1@94.webp"
+            }
+            onClick={viewProfile}
+          />
+          {isOnline && (
+            <div className="absolute bottom-0 right-3 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+          )}
+        </div>
         <div className="w-full h-full flex flex-row justify-between  pr-2">
           <div className="flex flex-col ml-4 justify-center items-start">
             <div
@@ -75,7 +94,15 @@ function ChatName() {
             >
               {fullname}
             </div>
-            <div className="text-xs opacity-70">Online</div>
+            <div className="text-xs opacity-70">
+              {isUserTyping ? (
+                <span className="text-blue-400 font-semibold">typing...</span>
+              ) : isOnline ? (
+                <span className="text-green-400">Online</span>
+              ) : (
+                <span>Offline</span>
+              )}
+            </div>
           </div>
           <div className="dropdown w-full flex justify-end p-5">
             <button

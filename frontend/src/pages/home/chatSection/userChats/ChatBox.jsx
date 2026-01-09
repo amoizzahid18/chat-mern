@@ -6,7 +6,9 @@ import TypeMsg from "./TypeMsg";
 import { useAuth } from "../../../AuthContext";
 import { Loader } from "../../../../App";
 import { useChatUI } from "../../../ChatUIContext";
+import { useSocket } from "../../../SocketContext";
 import axios from "axios";
+
 function ChatBox() {
   const [refreshMessages, setRefreshMessages] = useState(false);
   const { user, setUser } = useAuth();
@@ -15,10 +17,14 @@ function ChatBox() {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [msgToEdit, setMsgToEdit] = useState(null);
+  const socketValue = useSocket();
+  const navigate = useNavigate();
+
   const getMessages = async () => {
     if (!user) {
       setUser(null);
-      useNavigate("/login");
+      navigate("/login");
+      return;
     }
     try {
       setLoading(true);
@@ -40,6 +46,7 @@ function ChatBox() {
       setLoading(false);
     }
   };
+
   const formatChatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -63,12 +70,31 @@ function ChatBox() {
     });
   };
 
+  // Load initial messages
   useEffect(() => {
     getMessages();
-  }, [refreshMessages === true]);
+  }, [refreshMessages === true, id]);
+
+  // Listen for incoming messages from socket
+  useEffect(() => {
+    if (!socketValue?.incomingMessage) return;
+
+    const incoming = socketValue.incomingMessage;
+    
+    // Only add message if it's from the current conversation partner
+    if (incoming.senderId === id) {
+      setMessages((prev) => [...prev, incoming]);
+    }
+  }, [socketValue?.incomingMessage, id]);
+
+  // Handle when message is sent by user
+  const handleMessageSent = (newMessage) => {
+    setMessages((prev) => [...prev, newMessage]);
+  };
+
   return (
-    <div className="flex flex-col justify-around  bg-transparent">
-      <div
+    <div className="flex flex-col justify-around bg-transparent">
+      <div        
         className={`py-4 h-[500px] overflow-y-auto flex flex-col ${
           !loading ? "justify-end" : "justify-center items-center"
         }`}
@@ -88,7 +114,7 @@ function ChatBox() {
                   isForwarded={message.isForwarded}
                   isEdited={message.isEdited}
                   replyTo={message.replyTo}
-                  timestamp={formatChatTimestamp(message.updatedAt)}
+                  timestamp={formatChatTimestamp(message.updatedAt || message.createdAt)}
                   setRefreshMessages={setRefreshMessages}
                   setMsgToEdit={setMsgToEdit}
                 />
@@ -104,7 +130,7 @@ function ChatBox() {
                   isForwarded={message.isForwarded}
                   isEdited={message.isEdited}
                   replyTo={message.replyTo}
-                  timestamp={formatChatTimestamp(message.updatedAt)}
+                  timestamp={formatChatTimestamp(message.updatedAt || message.createdAt)}
                   setRefreshMessages={setRefreshMessages}
                 />
               );
@@ -116,7 +142,7 @@ function ChatBox() {
           </p>
         )}
       </div>
-      <TypeMsg msgToEdit={msgToEdit} setRefreshMessages={setRefreshMessages} />
+      <TypeMsg msgToEdit={msgToEdit} setRefreshMessages={setRefreshMessages} conversationId={friendsDM?.conversationId} onMessageSent={handleMessageSent} />
     </div>
   );
 }
