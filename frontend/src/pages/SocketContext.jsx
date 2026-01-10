@@ -11,7 +11,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // create socket ONCE for app lifetime
-    socketRef.current = io(import.meta.env.VITE_API_URL, {
+    socketRef.current = io(`${import.meta.env.VITE_API_URL}`, {
       withCredentials: true,
       reconnection: true,
       autoConnect: true,
