@@ -5,14 +5,15 @@ import { useState } from "react";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
-  const { goHome, viewProfile, friendsDM, setFriendsDM, setRefreshUsers } = useChatUI();
+  const { goHome, viewProfile, friendsDM, setFriendsDM, setRefreshUsers } =
+    useChatUI();
   const socketValue = useSocket();
   const { id, profilePic, fullname } = friendsDM;
   const [loading, setLoading] = useState(false);
 
   const isOnline = socketValue?.onlineUsers?.has(id);
   const isUserTyping = socketValue?.typingUsers?.has(id);
-  
+
   const removeFriend = async () => {
     if (id && friendsDM)
       try {
@@ -138,7 +139,9 @@ function ChatName() {
             >
               {/* View Profile */}
               <li
-                className={`px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer ${loading? "pointer-events-none":""}`}
+                className={`px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer ${
+                  loading ? "pointer-events-none" : ""
+                }`}
                 onClick={viewProfile}
               >
                 View Profile
@@ -146,17 +149,19 @@ function ChatName() {
 
               {/* Remove Friend */}
               <li
-            className={`px-4 py-2 ${loading?"bg-red-500/30 pointer-events-none":""} hover:bg-red-500/30 rounded-lg cursor-pointer`}
-            onClick={removeFriend}
-          >
-            {loading ? (
-              <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
-              <span className="loading loading-dots loading-sm text-white"></span>
-            </button>
-            
-            ) : ("Remove Friend") }
-            
-          </li>
+                className={`px-4 py-2 ${
+                  loading ? "bg-red-500/30 pointer-events-none" : ""
+                } hover:bg-red-500/30 rounded-lg cursor-pointer`}
+                onClick={removeFriend}
+              >
+                {loading ? (
+                  <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
+                    <span className="loading loading-dots loading-sm text-white"></span>
+                  </button>
+                ) : (
+                  "Remove Friend"
+                )}
+              </li>
             </ul>
           </div>
         </div>
