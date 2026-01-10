@@ -105,20 +105,16 @@ function Login() {
   };
 
   const loginUser = async () => {
+    if (user) useNavigate("/home");
     if (!user)
       try {
         setLoading(true);
-        const response = await api.post(
-          "/auth/login",
-          credentials,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await api.post("/auth/login", credentials, {
+          withCredentials: true,
+        });
         if (response.status === 200) {
+          console.log(`${credentials.username}`,"Logged in successfully");
           setLoading(false);
-          // const sock = connectSocket();
-          // sock.emit("hello", { message: "User logged in", id: sock.id });
           setUser(response.data);
           goHome();
         }

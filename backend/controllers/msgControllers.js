@@ -57,12 +57,11 @@ const getMsgs = async (req, res) => {
         participants: { $all: [senderId, id].sort() },
       }).populate("messages");
       if (!dm) {
-        return res.status(404).json({ message: "Conversation not found" });
+        return res.status(200).json([]);
       } else {
         return res.status(200).json(dm.messages);
       }
     }
-
     res.status(200).json(conversation.messages);
   } catch (error) {
     console.error("Error getting messages:", error);

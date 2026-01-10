@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatLeft from "./ChatLeft";
 import ChatRight from "./ChatRight";
@@ -19,6 +19,11 @@ function ChatBox() {
   const [msgToEdit, setMsgToEdit] = useState(null);
   const socketValue = useSocket();
   const navigate = useNavigate();
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const getMessages = async () => {
     if (!user) {
@@ -28,20 +33,17 @@ function ChatBox() {
     }
     try {
       setLoading(true);
-      const response = await api.get(
-        `/messages/dms/get/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await api.get(`/messages/dms/get/${id}`, {
+        withCredentials: true,
+      });
       if (response.status === 200) {
         const msgs = response.data;
         console.log(msgs);
         setMessages(msgs);
-        setRefreshMessages(false);
+        setRefreshMessages(true);
       }
     } catch (error) {
-      console.log(error.message);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -73,6 +75,11 @@ function ChatBox() {
   // Load initial messages
   useEffect(() => {
     getMessages();
+  }, [id]);
+  useEffect(() => {
+    if (refreshMessages) {
+      getMessages();
+    }
   }, [refreshMessages === true, id]);
 
   // Listen for incoming messages from socket
@@ -80,7 +87,7 @@ function ChatBox() {
     if (!socketValue?.incomingMessage) return;
 
     const incoming = socketValue.incomingMessage;
-    
+
     // Only add message if it's from the current conversation partner
     if (incoming.senderId === id) {
       setMessages((prev) => [...prev, incoming]);
@@ -94,55 +101,71 @@ function ChatBox() {
 
   return (
     <div className="flex flex-col justify-around bg-transparent">
-      <div        
-        className={`py-4 h-[500px] overflow-y-auto flex flex-col ${
-          !loading ? "justify-end" : "justify-center items-center"
+      <div
+        className={`py-4 h-[500px] overflow-y-auto ${
+          !loading ? "" : "flex justify-center items-center"
         }`}
       >
-        {loading ? (
-          <span className="loading loading-dots loading-xl text-white"></span>
-        ) : messages.length !== 0 ? (
-          messages.map((message) => {
-            if (message.senderId === user._id) {
-              return (
-                <ChatRight
-                  key={message._id}
-                  id={message._id}
-                  message={message.message}
-                  isAReply={message.isAReply}
-                  isDeleted={message.isDeleted}
-                  isForwarded={message.isForwarded}
-                  isEdited={message.isEdited}
-                  replyTo={message.replyTo}
-                  timestamp={formatChatTimestamp(message.updatedAt || message.createdAt)}
-                  setRefreshMessages={setRefreshMessages}
-                  setMsgToEdit={setMsgToEdit}
-                />
-              );
-            } else {
-              return (
-                <ChatLeft
-                  key={message._id}
-                  id={message._id}
-                  message={message.message}
-                  isAReply={message.isAReply}
-                  isDeleted={message.isDeleted}
-                  isForwarded={message.isForwarded}
-                  isEdited={message.isEdited}
-                  replyTo={message.replyTo}
-                  timestamp={formatChatTimestamp(message.updatedAt || message.createdAt)}
-                  setRefreshMessages={setRefreshMessages}
-                />
-              );
-            }
-          })
-        ) : (
-          <p className="text-center text-gray-500">
-            No messages yet. Start the conversation!
-          </p>
-        )}
+        <div className={`flex flex-col h-[460px] ${
+          !loading ? "" : "justify-center items-center"
+        }`}>
+          {loading ? (
+            <span className="loading loading-dots loading-xl text-white"></span>
+          ) : messages.length !== 0 ? (
+            messages.map((message) => {
+              if (message.senderId === user._id) {
+                return (
+                  <ChatRight
+                    key={message._id}
+                    id={message._id}
+                    message={message.message}
+                    isAReply={message.isAReply}
+                    isDeleted={message.isDeleted}
+                    isForwarded={message.isForwarded}
+                    isEdited={message.isEdited}
+                    replyTo={message.replyTo}
+                    timestamp={formatChatTimestamp(
+                      message.updatedAt || message.createdAt
+                    )}
+                    setRefreshMessages={setRefreshMessages}
+                    setMsgToEdit={setMsgToEdit}
+                  />
+                );
+              } else {
+                return (
+                  <ChatLeft
+                    key={message._id}
+                    id={message._id}
+                    message={message.message}
+                    isAReply={message.isAReply}
+                    isDeleted={message.isDeleted}
+                    isForwarded={message.isForwarded}
+                    isEdited={message.isEdited}
+                    replyTo={message.replyTo}
+                    timestamp={formatChatTimestamp(
+                      message.timestamp ||
+                        message.updatedAt ||
+                        message.createdAt
+                    )}
+                    setRefreshMessages={setRefreshMessages}
+                  />
+                );
+              }
+            })
+          ) : (
+            <p className="text-center text-lg flex justify-center items-center  h-full text-gray-300">
+              No messages yet. Start the conversation!
+            </p>
+          )}
+          <div ref={bottomRef} />
+        </div>
       </div>
-      <TypeMsg msgToEdit={msgToEdit} setRefreshMessages={setRefreshMessages} conversationId={friendsDM?.conversationId} onMessageSent={handleMessageSent} />
+      <TypeMsg
+        msgToEdit={msgToEdit}
+        setRefreshMessages={setRefreshMessages}
+        conversationId={friendsDM?.conversationId}
+        onMessageSent={handleMessageSent}
+      />
     </div>
   );
 }

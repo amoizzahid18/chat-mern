@@ -50,16 +50,16 @@ export const AuthProvider = ({ children }) => {
   // 🔌 Logout handler
   const logout = async () => {
     try {
-      await api.post("/auth/logout", {}, { withCredentials: true });
-      console.log("Logout successful");
+      const response = await api.post("/auth/logout", {}, { withCredentials: true });
+      if (response.status === 200) 
+        console.log("Logout successful");
     } catch (error) {
-      console.error("Logout error:", error.message);
+      console.error("Logout error:", error);
     } finally {
       // Clear state regardless of API call success
       if (socketValue) {
         socketValue.logout();
       }
-      
       setUser(null);
       setFriendsDM(null);
       goHome();

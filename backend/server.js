@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://chat-mern-lake.vercel.app", // your frontend URL
+    origin: ["https://chat-mern-lake.vercel.app", "http://localhost:5173"], // your frontend URL
     credentials: true,
   })
 );
@@ -32,7 +32,7 @@ const socketUserMap = new Map();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://chat-mern-lake.vercel.app", // your frontend
+    origin: ["https://chat-mern-lake.vercel.app", "http://localhost:5173"], // your frontend
     credentials: true,
   },
 });
@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async (data) => {
-    const { recipientId, message, conversationId, senderId } = data;
+    const { recipientId, message, conversationId, senderId, createdAt } = data;
     const recipientSocketId = socketUserMap.get(recipientId);
     
     console.log(`Message from ${senderId} to ${recipientId}:`, message);

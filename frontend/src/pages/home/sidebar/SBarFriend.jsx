@@ -14,6 +14,7 @@ function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
           bio: bio,
           email: email,
         });
+        console.log(fullname)
         openDm();
       }}
     >
