@@ -32,7 +32,7 @@ const socketUserMap = new Map();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173", // your frontend
+    origin: "https://chat-mern-lake.vercel.app", // your frontend
     credentials: true,
   },
 });
