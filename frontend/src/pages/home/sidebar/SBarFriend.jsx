@@ -4,7 +4,7 @@ function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
   const { openDm, setFriendsDM } = useChatUI();
   return (
     <div
-      className="flex h-16 hover:bg-white/30 cursor-default duration-75 justify-start items-center"
+      className="flex h-12 md:h-16 hover:bg-white/30 cursor-default duration-75 justify-start items-center px-2 md:px-0"
       onClick={() => {
         setFriendsDM({
           id: id,
@@ -19,7 +19,7 @@ function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
       }}
     >
       <div>
-        <img className="size-8 rounded-4xl m-2" src={profilePic} />
+        <img className="size-7 md:size-8 rounded-3xl m-2 md:m-2" src={profilePic} />
       </div>
 
       <div className="flex flex-col ml-2 items-start">

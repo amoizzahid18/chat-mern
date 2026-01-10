@@ -27,12 +27,12 @@ function WelcomeHome() {
     }
   };
   return (
-    <div className="h-full flex flex-col justify-center items-center">
-      <div className="dropdown w-full flex justify-end p-5">
+    <div className="h-full flex flex-col justify-center items-center px-3 sm:px-6">
+      <div className="dropdown w-full flex justify-end p-2 sm:p-5">
         <button
           tabIndex={0}
           role="button"
-          className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-xl shadow-lg border-none transition-all duration-300"
+          className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-xl shadow-lg border-none transition-all duration-300 text-sm sm:text-base"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -87,11 +87,11 @@ function WelcomeHome() {
         </ul>
       </div>
 
-      <div className="flex flex-col justify-center items-center h-full  text-center px-4">
-        <h1 className="text-5xl sm:text-6xl font-extrabold text-white drop-shadow-lg animate-fadeIn">
+      <div className="flex flex-col justify-center items-center h-full text-center px-3 sm:px-4">
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg animate-fadeIn">
           Welcome!
         </h1>
-        <p className="text-2xl sm:text-3xl font-semibold text-white/90 mt-4 animate-fadeIn delay-200">
+        <p className="text-lg sm:text-2xl font-semibold text-white/90 mt-4 animate-fadeIn delay-200">
           Chat with your loved ones now
         </p>
       </div>

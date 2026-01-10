@@ -58,7 +58,7 @@ function Sidebar() {
   }, [refreshUsers]);
   return (
     <div
-      className="flex flex-col w-1/4 px-4 py-5 rounded-2xl h-full 
+      className="flex flex-col w-full px-3 md:px-4 py-3 md:py-5 rounded-2xl h-full 
                    backdrop-blur-xl
                   "
     >
@@ -70,10 +70,10 @@ function Sidebar() {
       {/* Friends List */}
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
         {loadingF ? (
-          <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-120 rounded-box">
-            <div className="max-h-[490px]   overflow-y-scroll text-center">
+          <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-96 md:min-h-120 rounded-box">
+            <div className="max-h-[300px] md:max-h-[490px] overflow-y-scroll text-center">
               <div className="min-h-96 flex items-center justify-center">
-                <span class="loading loading-dots loading-lg"></span>
+                <span className="loading loading-dots loading-lg"></span>
               </div>
             </div>
           </div>
@@ -88,14 +88,14 @@ function Sidebar() {
           <button
             className="w-full pointer-events-none flex items-center justify-center
                            bg-white/20 text-white border border-white/30 rounded-xl 
-                           py-3 shadow-md"
+                           py-2 md:py-3 shadow-md text-sm md:text-base"
           >
             <span className="loading loading-dots loading-sm text-white"></span>
           </button>
         ) : (
           <button
             onClick={logoutUser}
-            className="btn bg-purple-700 hover:bg-purple-600 border-none text-lg text-white w-full shadow-lg py-2 rounded-xl transition"
+            className="btn bg-purple-700 hover:bg-purple-600 border-none text-white w-full shadow-lg py-2 rounded-xl transition text-sm md:text-lg"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

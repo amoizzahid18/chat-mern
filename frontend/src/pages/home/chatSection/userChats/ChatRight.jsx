@@ -192,22 +192,22 @@ function ChatRight({
   );
 
   return (
-    <div className="px-6">
-      <div className="chat chat-end ">
+    <div className="px-2 md:px-6 py-1 w-full">
+      <div className="chat chat-end">
         <div
-          className={`chat-bubble py-0 bg-white/10 ${isDeleted ? "opacity-75": ""} text-white pr-0 text-wrap `}
+          className={`chat-bubble py-0 bg-white/10 ${isDeleted ? "opacity-75": ""} text-white pr-0 text-wrap text-sm md:text-base max-w-[85vw] md:max-w-sm`}
           onMouseEnter={() => setShowModal(true)}
           onMouseLeave={() => setShowModal(false)}
         >
           <div
-            className={` w-full flex justify-end  ${
+            className={`w-full flex justify-end ${
               showModal ? "" : "opacity-0"
             }`}
           >
             {messageOptions}
           </div>
 
-          <span className="mr-3">{message}</span>
+          <span className="mr-3 break-words">{message}</span>
           <span className="flex justify-end mr-3">
             <time className="text-xs opacity-50">{timestamp}</time>
           </span>

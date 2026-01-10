@@ -242,13 +242,13 @@ function Signup() {
   };
 
   return (
-    <div className="flex w-full justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4">
-      <div className="w-full max-w-4xl bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl p-10">
-        <h1 className="text-4xl font-extrabold text-center text-white tracking-wide mb-10">
+    <div className="flex w-full justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black p-2 sm:p-4">
+      <div className="w-full max-w-4xl bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl p-6 sm:p-10 mx-3 sm:mx-0">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-white tracking-wide mb-6 sm:mb-10">
           Create Your Account
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10">
           {/* Column 1 */}
           <div>
             {/* Full Name */}
@@ -393,7 +393,7 @@ function Signup() {
             <label className="text-purple-200 font-semibold text-sm">
               Gender
             </label>
-            <div className="flex gap-6 mt-3">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 mt-3">
               <label className="flex items-center gap-2 cursor-pointer text-white">
                 <input
                   type="radio"
@@ -421,13 +421,13 @@ function Signup() {
 
             {/* Submit */}
             {loading ? (
-              <button className="btn btn-disabled w-full mt-10">
+              <button className="btn btn-disabled w-full mt-6 md:mt-10">
                 <span className="loading loading-spinner"></span>
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="mt-10 w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-bold shadow-lg transition transform hover:scale-[1.02]"
+                className="mt-6 md:mt-10 w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-bold shadow-lg transition transform hover:scale-[1.02] text-sm sm:text-base"
               >
                 Sign Up
               </button>

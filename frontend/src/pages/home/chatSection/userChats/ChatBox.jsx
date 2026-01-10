@@ -100,13 +100,13 @@ function ChatBox() {
   };
 
   return (
-    <div className="flex flex-col justify-around bg-transparent">
+    <div className="flex flex-col justify-around bg-transparent h-full overflow-hidden">
       <div
-        className={`py-4 h-[500px] overflow-y-auto ${
+        className={`py-2 md:py-4 flex-1 overflow-y-auto ${
           !loading ? "" : "flex justify-center items-center"
         }`}
       >
-        <div className={`flex flex-col h-[460px] ${
+        <div className={`flex flex-col flex-1 ${
           !loading ? "" : "justify-center items-center"
         }`}>
           {loading ? (
@@ -153,7 +153,7 @@ function ChatBox() {
               }
             })
           ) : (
-            <p className="text-center text-lg flex justify-center items-center  h-full text-gray-300">
+            <p className="text-center text-base md:text-lg flex justify-center items-center h-full text-gray-300">
               No messages yet. Start the conversation!
             </p>
           )}

@@ -144,9 +144,9 @@ function Login() {
 
   return (
     <>
-      <div className="w-full min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-900 via-purple-900 to-black p-4">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl w-full shadow-2xl max-w-md p-8 flex flex-col">
-          <h1 className="text-4xl font-extrabold text-center text-white mb-8 drop-shadow-lg">
+      <div className="w-full min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-900 via-purple-900 to-black p-2 sm:p-4">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl w-full shadow-2xl max-w-md p-6 sm:p-8 flex flex-col mx-3 sm:mx-0">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-white mb-6 sm:mb-8 drop-shadow-lg">
             Login
           </h1>
 
@@ -177,7 +177,7 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="quinn123"
-                className="bg-transparent w-full text-white placeholder-white/60 outline-none"
+                className="bg-transparent w-full text-white placeholder-white/60 outline-none text-sm sm:text-base"
               />
             </div>
             {errors.username && (
@@ -213,7 +213,7 @@ function Login() {
                 onChange={handleChange}
                 required
                 placeholder="margot123"
-                className="bg-transparent w-full text-white placeholder-white/60 outline-none"
+                className="bg-transparent w-full text-white placeholder-white/60 outline-none text-sm sm:text-base"
               />
 
               {showPassword ? eyeOpen : eyeClose}
@@ -231,7 +231,7 @@ function Login() {
           ) : (
             <button
               onClick={handleSubmit}
-              className="btn bg-purple-700 hover:bg-purple-600 border-none text-lg text-white w-full mt-4 shadow-lg py-2 rounded-xl transition"
+              className="btn bg-purple-700 hover:bg-purple-600 border-none text-base sm:text-lg text-white w-full mt-4 shadow-lg py-2 rounded-xl transition"
             >
               Login
             </button>
@@ -241,7 +241,7 @@ function Login() {
           <div className="text-center text-white/70 my-6">Or sign in with</div>
 
           {/* Google button */}
-          <button className="flex justify-center items-center gap-3 w-full bg-white/20 hover:bg-white/30 px-6 py-3 rounded-full cursor-pointer text-white shadow-md transition">
+          <button className="flex justify-center items-center gap-3 w-full bg-white/20 hover:bg-white/30 px-4 py-3 rounded-full cursor-pointer text-white shadow-md transition text-sm sm:text-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"

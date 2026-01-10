@@ -2,8 +2,8 @@ import SBarFriend from "./SBarFriend";
 
 function SidebarFriends({ friends }) {
   return (
-    <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-120 rounded-box">
-      <div className="max-h-[490px]   overflow-y-scroll text-center">
+    <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-96 rounded-box">
+      <div className="max-h-[300px] md:max-h-[490px] overflow-y-scroll text-center">
         {friends.length !== 0 ? (
           friends.map((friend) => (
             <SBarFriend

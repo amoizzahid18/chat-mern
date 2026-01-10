@@ -39,22 +39,21 @@ function ChatName() {
   };
   return (
     <>
-      <div className="flex flex-row justify-start bg-transparent items-center">
+      <div className="flex flex-row justify-start bg-transparent items-center px-2 md:px-4 py-2 md:py-3 border-b border-white/20">
         <button
           onClick={() => {
             goHome();
             setFriendsDM(null);
           }}
-          className="ml-4 hover:bg-white/10 p-2 hover:shadow-md cursor-pointer  rounded-full"
+          className="ml-2 md:ml-4 hover:bg-white/10 p-2 hover:shadow-md cursor-pointer rounded-full"
         >
           <svg
-            className="h-[1.5em] "
+            className="h-[1.3em] md:h-[1.5em]"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            class="size-6"
             color="white"
           >
             <path
@@ -65,18 +64,9 @@ function ChatName() {
           </svg>
         </button>
 
-        {/* <img
-          className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
-          src={
-            profilePic
-              ? profilePic
-              : "https://img.daisyui.com/images/profile/demo/1@94.webp"
-          }
-          onClick={viewProfile}
-        /> */}
         <div className="relative">
           <img
-            className="size-10 rounded-4xl mx-3 my-2 cursor-pointer"
+            className="size-8 md:size-10 rounded-4xl mx-2 md:mx-3 my-2 cursor-pointer"
             src={
               profilePic
                 ? profilePic
@@ -85,13 +75,13 @@ function ChatName() {
             onClick={viewProfile}
           />
           {isOnline && (
-            <div className="absolute bottom-0 right-3 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+            <div className="absolute bottom-0 right-2 md:right-3 w-2 md:w-3 h-2 md:h-3 bg-green-500 rounded-full border-2 border-white"></div>
           )}
         </div>
-        <div className="w-full h-full flex flex-row justify-between  pr-2">
-          <div className="flex flex-col ml-4 justify-center items-start">
+        <div className="flex-1 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+          <div className="flex flex-col ml-2 md:ml-4 justify-center items-start">
             <div
-              className="font-bold text-lg cursor-pointer"
+              className="font-bold text-sm md:text-lg cursor-pointer"
               onClick={viewProfile}
             >
               {fullname}
@@ -106,11 +96,11 @@ function ChatName() {
               )}
             </div>
           </div>
-          <div className="dropdown w-full flex justify-end p-5">
+          <div className="dropdown w-full md:w-auto flex justify-end p-2 md:p-5">
             <button
               tabIndex={0}
               role="button"
-              className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-4 py-2 rounded-xl shadow-lg border-none transition-all duration-300"
+              className="btn bg-white/10 hover:bg-white/20 text-white flex items-center justify-center gap-2 px-2 md:px-4 py-2 rounded-xl shadow-lg border-none transition-all duration-300 text-xs md:text-base"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +108,7 @@ function ChatName() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-4 h-4 md:w-6 md:h-6"
               >
                 <path
                   strokeLinecap="round"
@@ -131,12 +121,12 @@ function ChatName() {
                   d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                 />
               </svg>
-              <span>Settings</span>
+              <span className="hidden sm:inline">Settings</span>
             </button>
 
             <ul
               tabIndex={0}
-              className="dropdown-content w-44 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl mt-12 flex flex-col gap-1 text-white"
+              className="dropdown-content w-44 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl mt-12 flex flex-col gap-1 text-white text-sm md:text-base"
             >
               {/* View Profile */}
               <li
@@ -156,7 +146,7 @@ function ChatName() {
                 onClick={removeFriend}
               >
                 {loading ? (
-                  <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
+                  <button className="bg-transparent w-full pointer-events-none flex justify-center">
                     <span className="loading loading-dots loading-sm text-white"></span>
                   </button>
                 ) : (
