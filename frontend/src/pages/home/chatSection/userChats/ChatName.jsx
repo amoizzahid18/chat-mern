@@ -2,7 +2,7 @@ import axios from "axios";
 import { useChatUI } from "../../../ChatUIContext";
 import { useSocket } from "../../../SocketContext";
 import { useState } from "react";
-import api from "@/api/api";
+import api from "../../../../../api.js";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {

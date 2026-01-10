@@ -1,7 +1,7 @@
 import { useChatUI } from "../../ChatUIContext";
 import { useState } from "react";
 import { useAuth } from "../../AuthContext";
-import api from "@/api/api";
+import api from "../../../../api.js";
 
 function WelcomeHome() {
   const { openAddFriend, viewProfile } = useChatUI();

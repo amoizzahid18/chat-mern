@@ -5,7 +5,7 @@ import { useSocket } from "../../SocketContext";
 import { useAuth } from "../../AuthContext";
 import { useChatUI } from "../../ChatUIContext";
 import { useNavigate } from "react-router-dom";
-import api from "@/api/api";
+import api from "../../../../api.js";
 
 function Sidebar() {
   const socketValue = useSocket();

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../SocketContext";
 import { useAuth } from "../AuthContext";
 import { useChatUI } from "../ChatUIContext";
-import api from "@/api/api";
+import api from "../../../api.js";
 
 function Login() {
   // const { connectSocket } = useSocket();

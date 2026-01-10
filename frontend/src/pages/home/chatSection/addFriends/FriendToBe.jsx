@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { useChatUI } from "../../../ChatUIContext";
-import api from "@/api/api";
+import api from "../../../../../api.js";
 
 function FriendToBe({ id, fullname, username, profilePic, gender }) {
   const [loading, setLoading] = useState(false);

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useSocket } from "./SocketContext";
 import { useChatUI } from "./ChatUIContext";
-import api from "@/api/api";
+import api from "../../api.js";
 
 const AuthContext = createContext(null);
 
