@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import SearchBar from "../../SearchBar";
 import ShowFriendsToBe from "./ShowFriendsToBe";
-import axios from "axios";
 import { useChatUI } from "../../../ChatUIContext";
 import { useAuth } from "../../../AuthContext";
+import api from "@/api/api";
 
 function AddFriend() {
   const { goHome, refreshUsers } = useChatUI();
@@ -16,7 +16,7 @@ function AddFriend() {
     if (user) 
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/home/all-users", {
+      const response = await api.get("/home/all-users", {
         withCredentials: true,
       });
       if (response.status === 200) {

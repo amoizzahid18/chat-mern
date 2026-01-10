@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useSocket } from "./SocketContext";
 import { useChatUI } from "./ChatUIContext";
+import api from "@/api/api";
 
 const AuthContext = createContext(null);
 
@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   // 🔐 Validate user on app load / refresh
   const validateUser = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/auth/validate",
+      const response = await api.get(
+        "/auth/validate",
         { withCredentials: true }
       );
 
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   // 🔌 Logout handler
   const logout = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/logout", {}, { withCredentials: true });
+      await api.post("/auth/logout", {}, { withCredentials: true });
       console.log("Logout successful");
     } catch (error) {
       console.error("Logout error:", error.message);

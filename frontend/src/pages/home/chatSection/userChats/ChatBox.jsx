@@ -7,7 +7,7 @@ import { useAuth } from "../../../AuthContext";
 import { Loader } from "../../../../App";
 import { useChatUI } from "../../../ChatUIContext";
 import { useSocket } from "../../../SocketContext";
-import axios from "axios";
+import api from "@/api/api";
 
 function ChatBox() {
   const [refreshMessages, setRefreshMessages] = useState(false);
@@ -28,8 +28,8 @@ function ChatBox() {
     }
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:5000/messages/dms/get/${id}`,
+      const response = await api.get(
+        `/messages/dms/get/${id}`,
         {
           withCredentials: true,
         }

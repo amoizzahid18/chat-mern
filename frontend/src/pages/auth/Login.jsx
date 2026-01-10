@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useSocket } from "../SocketContext";
 import { useAuth } from "../AuthContext";
 import { useChatUI } from "../ChatUIContext";
+import api from "@/api/api";
 
 function Login() {
   // const { connectSocket } = useSocket();
@@ -108,8 +108,8 @@ function Login() {
     if (!user)
       try {
         setLoading(true);
-        const response = await axios.post(
-          "http://localhost:5000/auth/login",
+        const response = await api.post(
+          "/auth/login",
           credentials,
           {
             withCredentials: true,

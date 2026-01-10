@@ -1,11 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
-import axios from "axios";
 import SidebarFriends from "./SidebarFriends";
 import SearchBar from "../SearchBar";
 import { useSocket } from "../../SocketContext";
 import { useAuth } from "../../AuthContext";
 import { useChatUI } from "../../ChatUIContext";
 import { useNavigate } from "react-router-dom";
+import api from "@/api/api";
 
 function Sidebar() {
   const socketValue = useSocket();
@@ -36,7 +36,7 @@ function Sidebar() {
     if (user)
       try {
         setLoadingF(true);
-        const response = await axios.get("http://localhost:5000/home/friends", {
+        const response = await api.get("/home/friends", {
           withCredentials: true,
         });
         if (response.status === 200) {

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useChatUI } from "../../../ChatUIContext";
 import { useSocket } from "../../../SocketContext";
 import { useState } from "react";
+import api from "@/api/api";
 
 // function ChatName( {setIsDm} ) {
 function ChatName() {
@@ -18,8 +19,8 @@ function ChatName() {
     if (id && friendsDM)
       try {
         setLoading(true);
-        const response = await axios.post(
-          `http://localhost:5000/home/unfriend/${id}`,
+        const response = await api.post(
+          `/home/unfriend/${id}`,
           null,
           {
             withCredentials: true,

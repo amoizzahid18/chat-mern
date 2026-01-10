@@ -1,9 +1,7 @@
 import { useChatUI } from "../../ChatUIContext";
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "../../AuthContext";
-import { set } from "mongoose";
-
+import api from "@/api/api";
 
 function WelcomeHome() {
   const { openAddFriend, viewProfile } = useChatUI();
@@ -12,8 +10,8 @@ function WelcomeHome() {
   const deleteAccount = async () => {
     try {
       setLoading(true);
-      const response = await axios.delete(
-        "http://localhost:5000/home/delete-account",
+      const response = await api.delete(
+        "/home/delete-account",
         {
           withCredentials: true,
         }

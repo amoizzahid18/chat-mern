@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useAuth } from "../../../AuthContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "@/api/api";
 
 function ChatRight({
   id,
@@ -26,8 +26,8 @@ function ChatRight({
     }
     try {
       setLoading(true);
-      const response = await axios.put(
-        `http://localhost:5000/messages/dms/message/delete/${id}`,
+      const response = await api.put(
+        `messages/dms/message/delete/${id}`,
         null,
         {
           withCredentials: true,

@@ -85,8 +85,8 @@ function TypeMsg({ msgToEdit, setRefreshMessages, conversationId, onMessageSent 
     }
     try {
       setLoading(true);
-      const response = await axios.put(
-        `http://localhost:5000/messages/dms/message/edit/${msgToEdit.id}`,
+      const response = await api.put(
+        `/messages/dms/message/edit/${msgToEdit.id}`,
         { message: message },
         {
           withCredentials: true,

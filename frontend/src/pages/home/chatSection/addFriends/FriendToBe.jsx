@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
 import { useChatUI } from "../../../ChatUIContext";
+import api from "@/api/api";
+
 function FriendToBe({ id, fullname, username, profilePic, gender }) {
   const [loading, setLoading] = useState(false);
   const { setRefreshUsers } = useChatUI();
   const addFriend = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        `http://localhost:5000/home/add-friend/${id}`,
+      const response = await api.post(
+        `/home/add-friend/${id}`,
         null,
         {
           withCredentials: true,
