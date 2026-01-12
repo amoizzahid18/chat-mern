@@ -7,8 +7,10 @@ const generateTokenAndSetCookie = (userId, res) => {
   res.cookie("jwt", token, {
     maxAge: 30 * 60 * 1000, // 3 minute});
     httpOnly: true, // prevent xss cross-site scripting attacks (js cannot access)
-    secure: process.env.NODE_ENV !== "development", // set to true in production (https)
-    sameSite: process.env.NODE_ENV !== "development" ? "None" : "strict", // prevent csrf cross-site request forgery attacks
+    secure: true, // set to true in production (https)
+    sameSite: "None", // prevent csrf attacks "None" in production with https
+    // secure: false, // set to false in deployment (http)
+    // sameSite: "strict", // prevent csrf attacks "strict" in development with http
     }
 )};
 export default generateTokenAndSetCookie;
