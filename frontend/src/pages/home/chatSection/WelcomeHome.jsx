@@ -2,27 +2,35 @@ import { useChatUI } from "../../ChatUIContext";
 import { useState } from "react";
 import { useAuth } from "../../AuthContext";
 import api from "../../../../api.js";
+import { useNavigate } from "react-router-dom";
 
 function WelcomeHome() {
   const { openAddFriend, viewProfile } = useChatUI();
-  const { setUser } = useAuth();  
+  const { user, setUser, logout } = useAuth();
+  const [loadingDel, setLoadingDel] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const logoutUser = async () => {
+    if (user) {
+      setLoading(true);
+      await logout(); // Uses the logout from AuthContext
+      setLoading(false);
+      navigate("/login"); // Redirect to login page
+    }
+  };
   const deleteAccount = async () => {
     try {
-      setLoading(true);
-      const response = await api.delete(
-        "/home/delete-account",
-        {
-          withCredentials: true,
-        }
-      );
+      setLoadingDel(true);
+      const response = await api.delete("/home/delete-account", {
+        withCredentials: true,
+      });
       if (response.status === 200) {
-        console.log("Account deleted")
+        console.log("Account deleted");
         setUser(null);
-        setLoading(false);
+        setLoadingDel(false);
       }
     } catch (error) {
-      setLoading(false);
+      setLoadingDel(false);
       console.log(error.message);
     }
   };
@@ -61,28 +69,52 @@ function WelcomeHome() {
           className="dropdown-content  w-44 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl mt-12 flex flex-col gap-1 text-white"
         >
           <li
-            className={`px-4 py-2 ${loading? "pointer-events-none":""} hover:bg-white/20 rounded-lg cursor-pointer`}
+            className={`px-4 py-2 ${
+              loading ? "pointer-events-none" : ""
+            } hover:bg-white/20 rounded-lg cursor-pointer`}
             onClick={viewProfile}
           >
             View Profile
           </li>
           <li
-            className={`px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer ${loading? "pointer-events-none":""}`}
+            className={`px-4 py-2 hover:bg-white/20 rounded-lg cursor-pointer ${
+              loading ? "pointer-events-none" : ""
+            }`}
             onClick={openAddFriend}
           >
             Add Friend
           </li>
           <li
-            className={`px-4 py-2 ${loading?"bg-red-500/30 pointer-events-none":""} hover:bg-red-500/30 rounded-lg cursor-pointer`}
+            className={`px-4 py-2 ${
+              loading || loadingDel ? "pointer-events-none" : ""
+            } ${
+              loadingDel ? "bg-red-500/30 " : ""
+            } hover:bg-red-500/30 rounded-lg cursor-pointer`}
             onClick={deleteAccount}
+          >
+            {loadingDel ? (
+              <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
+                <span className="loading loading-dots loading-sm text-white"></span>
+              </button>
+            ) : (
+              "Delete Account"
+            )}
+          </li>
+          <li
+            className={`px-4 py-2 ${
+              loading
+                ? "bg-white/20 text-white border border-white/30 pointer-events-none"
+                : "bg-purple-700 hover:bg-purple-600"
+            }  cursor-pointer rounded-lg`}
+            onClick={logoutUser}
           >
             {loading ? (
               <button className="  bg-transparent w-full pointer-events-none  flex justify-center ">
-              <span className="loading loading-dots loading-sm text-white"></span>
-            </button>
-            
-            ) : ("Delete Account") }
-            
+                <span className="loading loading-dots loading-sm text-white"></span>
+              </button>
+            ) : (
+              "Logout"
+            )}
           </li>
         </ul>
       </div>

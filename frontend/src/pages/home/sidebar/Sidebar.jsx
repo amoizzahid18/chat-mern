@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../../api.js";
 
 function Sidebar() {
-  const socketValue = useSocket();
-  const { refreshUsers, goHome, setFriendsDM } = useChatUI();
+  const { refreshUsers } = useChatUI();
   const [friends, setFriends] = useState([]);
   const [loadingF, setLoadingF] = useState(true);
   const [filter, setFilter] = useState("");
@@ -58,7 +57,7 @@ function Sidebar() {
   }, [refreshUsers]);
   return (
     <div
-      className="flex flex-col w-full px-3 md:px-4 py-3 md:py-5 rounded-2xl h-full 
+      className="flex flex-col w-full  px-3 py-5 rounded-2xl h-full 
                    backdrop-blur-xl
                   "
     >
@@ -68,10 +67,10 @@ function Sidebar() {
       </div>
 
       {/* Friends List */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
+      <div className="flex-1 overflow-y-auto  custom-scrollbar  pr-1">
         {loadingF ? (
-          <div className=" bg-white/20 text-white border border-white/30 w-full my-4 shadow-md h-full min-h-96 md:min-h-120 rounded-box">
-            <div className="max-h-[300px] md:max-h-[490px] overflow-y-scroll text-center">
+          <div className=" bg-white/20 h-[490px] text-white border border-white/30 w-full  shadow-md  rounded-box">
+            <div className=" overflow-y-scroll text-center">
               <div className="min-h-96 flex items-center justify-center">
                 <span className="loading loading-dots loading-lg"></span>
               </div>
@@ -83,7 +82,7 @@ function Sidebar() {
       </div>
 
       {/* Logout Button */}
-      <div className="mt-5">
+      <div className="hidden lg:flex mt-5">
         {loading ? (
           <button
             className="w-full pointer-events-none flex items-center justify-center

@@ -4,6 +4,7 @@ const ChatUIContext = createContext();
 
 export const ChatUIProvider = ({ children }) => {
   const [isDm, setIsDm] = useState(false);
+  const [showSideBar, setShowSidebar] = useState(false);
   const [isAddFriend, setIsAddFriend] = useState(false);
   const [isViewProfile, setIsViewProfile] = useState(false);
   const [friendsDM, setFriendsDM] = useState(null);
@@ -33,11 +34,13 @@ export const ChatUIProvider = ({ children }) => {
     <ChatUIContext.Provider
       value={{
         isDm,
+        showSideBar,
         isAddFriend,
         isViewProfile,
         friendsDM,
         refreshUsers,
         openDm,
+        setShowSidebar,
         openAddFriend,
         goHome,
         viewProfile,

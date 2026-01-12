@@ -11,7 +11,7 @@ function ChatSection() {
   const {isDm, isAddFriend, isViewProfile} = useChatUI();
 
   return (
-      <div className="w-full bg-transparent flex flex-col text-white h-full overflow-hidden">
+      <div className="w-full bg-transparent flex flex-col text-white h-[600px] lg:h-full overflow-hidden">
       {!isDm && !isAddFriend && !isViewProfile ? (
         <WelcomeHome  />
       ) : isDm && !isAddFriend && !isViewProfile ? (

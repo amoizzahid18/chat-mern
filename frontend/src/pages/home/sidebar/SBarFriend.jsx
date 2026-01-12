@@ -1,7 +1,7 @@
 import { useChatUI } from "../../ChatUIContext.jsx";
 
 function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
-  const { openDm, setFriendsDM } = useChatUI();
+  const { openDm, setFriendsDM, showSideBar, setShowSidebar } = useChatUI();
   return (
     <div
       className="flex h-12 md:h-16 hover:bg-white/30 cursor-default duration-75 justify-start items-center px-2 md:px-0"
@@ -16,6 +16,7 @@ function SBarFriend({ id, profilePic, fullname, username, bio, email }) {
         });
         console.log(fullname)
         openDm();
+        if (showSideBar) setShowSidebar(false);
       }}
     >
       <div>
