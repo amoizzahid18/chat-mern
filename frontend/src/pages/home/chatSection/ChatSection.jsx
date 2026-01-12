@@ -15,7 +15,7 @@ function ChatSection() {
       {!isDm && !isAddFriend && !isViewProfile ? (
         <WelcomeHome  />
       ) : isDm && !isAddFriend && !isViewProfile ? (
-        <div className="w-full flex flex-col   h-full ">
+        <div className="w-full flex flex-col   h-full lg:h-[660px] ">
           <ChatName  />
           <ChatBox />
         </div>
