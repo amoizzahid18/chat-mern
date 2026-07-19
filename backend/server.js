@@ -19,9 +19,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://chat-mern-lake.vercel.app", "http://localhost:5173"], // your frontend URL
+    origin: ["https://chat-mern-lake.vercel.app","https://chat-mern-production.up.railway.app", "http://localhost:5173"], // your frontend URL
     credentials: true,
-  })
+  }),
 );
 
 app.use("/auth", authRoutes);
@@ -38,7 +38,7 @@ const io = new Server(httpServer, {
 });
 io.on("connection", (socket) => {
   console.log("New Client connected: ", socket.id);
-  
+
   socket.on("register", (userId) => {
     socket.userId = userId;
     socketUserMap.set(userId, socket.id);
@@ -50,16 +50,16 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", async (data) => {
     const { recipientId, message, conversationId, senderId, createdAt } = data;
     const recipientSocketId = socketUserMap.get(recipientId);
-    
+
     console.log(`Message from ${senderId} to ${recipientId}:`, message);
-    
+
     try {
       // Save message to database
       const Message = (await import("./models/msgModel.js")).default;
       const Convo = (await import("./models/convoModel.js")).default;
-      
+
       let conversation = await Convo.findById(conversationId);
-      
+
       if (!conversation) {
         conversation = await Convo.findOne({
           participants: { $all: [senderId, recipientId].sort() },
@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
           });
         }
       }
-      
+
       const newMessage = await Message.create({
         senderId: senderId,
         receiverId: recipientId,
@@ -79,10 +79,10 @@ io.on("connection", (socket) => {
         isAReply: false,
         isForwarded: false,
       });
-      
+
       conversation.messages.push(newMessage._id);
       await conversation.save();
-      
+
       // Send message to recipient if they're online
       if (recipientSocketId) {
         io.to(recipientSocketId).emit("receiveMessage", {
@@ -97,19 +97,19 @@ io.on("connection", (socket) => {
           isDeleted: false,
         });
       }
-      
+
       // Send acknowledgment to sender
-      socket.emit("messageSent", { 
-        conversationId, 
+      socket.emit("messageSent", {
+        conversationId,
         success: true,
-        timestamp: newMessage.createdAt 
+        timestamp: newMessage.createdAt,
       });
     } catch (error) {
       console.error("Error saving message:", error);
-      socket.emit("messageSent", { 
-        conversationId, 
+      socket.emit("messageSent", {
+        conversationId,
         success: false,
-        error: error.message
+        error: error.message,
       });
     }
   });
@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
   socket.on("typing", (data) => {
     const { recipientId, isTyping } = data;
     const recipientSocketId = socketUserMap.get(recipientId);
-    
+
     if (recipientSocketId) {
       io.to(recipientSocketId).emit("userTyping", {
         userId: socket.userId,
